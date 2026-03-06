@@ -159,4 +159,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 Prashant Tiwari - [Your Email]
 
-Project Link: [https://github.com/yourusername/portfolio-v3](https://github.com/yourusername/portfolio-v3)
+Project Link: [https://github.com/techy-prashant/portfolio-v3](https://github.com/techy-prashant/portfolio-v3)
