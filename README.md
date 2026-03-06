@@ -157,6 +157,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Contact
 
-Prashant Tiwari - [Your Email]
+Prashant Tiwari - [pt286355@gmail.com]
 
 Project Link: [https://github.com/techy-prashant/portfolio-v3](https://github.com/techy-prashant/portfolio-v3)
