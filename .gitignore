@@ -1,0 +1,28 @@
+# dependencies
+/node_modules
+
+# Next.js build output
+/.next
+/out
+/dist
+
+# Environment variables (do NOT commit keys)
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+
+# Google service account and other secret JSONs
+Not to commit/
+portfolio-*.json
+*service-account*.json
+*credentials*.json
+
+# IDE/editor folders
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
