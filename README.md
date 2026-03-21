@@ -9,7 +9,6 @@ A modern, responsive portfolio website built with Next.js 14, TypeScript, and Ta
 - **Newsletter Signup**: Email verification system for newsletter subscriptions
 - **Image Slider**: Interactive hero section with multiple images
 - **Smooth Animations**: Framer Motion animations throughout
-- **Dark/Light Theme**: Customizable theming
 - **SEO Optimized**: Meta tags and structured data
 
 ## Tech Stack
@@ -19,7 +18,7 @@ A modern, responsive portfolio website built with Next.js 14, TypeScript, and Ta
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **Email Service**: Resend API
-- **Deployment**: Vercel/Netlify
+- **Deployment**: Vercel
 
 ## Getting Started
 
