@@ -6,6 +6,7 @@
   :root {
     --font-syne: 'Syne', sans-serif;
     --font-mono: 'Space Mono', monospace;
+    --accent-cobalt: #174EA6;
     /* Site-wide white background */
     --bg-gradient: white;
   }
@@ -25,8 +26,8 @@
   * { cursor: none !important; }
 
   ::selection {
-    background-color: rgba(0,0,0,0.15);
-    color: black;
+    background-color: var(--accent-cobalt);
+    color: white;
   }
 
   ::-webkit-scrollbar { width: 4px; }

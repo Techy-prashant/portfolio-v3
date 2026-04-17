@@ -42,7 +42,7 @@ export default function Contact() {
         <motion.div className="flex items-center gap-3 mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>Contact</span>
           <span className="flex-1 h-px bg-stone-900/20" />
-          <span className="text-xs font-mono text-stone-500 tracking-widest uppercase">05</span>
+          <span className="text-sm font-mono font-bold text-stone-700 tracking-widest uppercase">05</span>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
@@ -50,7 +50,7 @@ export default function Contact() {
             <h2 className="text-4xl sm:text-5xl font-bold text-stone-900 mb-6 leading-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
               Let's build something remarkable.
             </h2>
-            <p className="text-stone-600 text-[15px] leading-relaxed mb-10">
+            <p className="text-stone-700 text-[15px] leading-relaxed mb-10">
               Whether you have a project, want to collaborate, or just want to say hi — I'm always open.
             </p>
             <div className="space-y-3">
@@ -58,13 +58,13 @@ export default function Contact() {
                 <a key={link.platform} href={link.url} target={link.icon !== "mail" ? "_blank" : undefined} rel="noopener noreferrer"
                   className="group glass-card flex items-center justify-between rounded-xl px-5 py-4 shadow-lg shadow-black/15 hover:shadow-xl hover:shadow-black/20 transition-all duration-300">
                   <div className="flex items-center gap-3">
-                    <span className="text-stone-600 group-hover:text-stone-900 transition-colors">{iconMap[link.icon]}</span>
+                    <span className="text-stone-700 group-hover:text-black transition-colors">{iconMap[link.icon]}</span>
                     <div>
                       <p className="text-sm font-bold text-stone-900">{link.platform}</p>
-                      <p className="text-xs text-stone-500 font-mono">{link.handle}</p>
+                      <p className="text-xs text-stone-700 font-mono">{link.handle}</p>
                     </div>
                   </div>
-                  <ArrowUpRight size={14} className="text-stone-400 group-hover:text-stone-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                  <ArrowUpRight size={14} className="text-stone-700 group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                 </a>
               ))}
             </div>
@@ -75,18 +75,18 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-mono text-stone-500 font-bold uppercase tracking-widest mb-2">Name</label>
+                    <label className="block text-xs font-mono text-stone-700 font-bold uppercase tracking-widest mb-2">Name</label>
                     <input type="text" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
                       className="w-full bg-white/70 border border-stone-200 rounded-xl px-4 py-3 text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-200 transition-all shadow-sm" placeholder="Your name" />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-mono text-stone-500 font-bold uppercase tracking-widest mb-2">Email</label>
+                    <label className="block text-xs font-mono text-stone-700 font-bold uppercase tracking-widest mb-2">Email</label>
                     <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
                       className="w-full bg-white/70 border border-stone-200 rounded-xl px-4 py-3 text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-200 transition-all shadow-sm" placeholder="your@email.com" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-mono text-stone-500 font-bold uppercase tracking-widest mb-2">Message</label>
+                  <label className="block text-xs font-mono text-stone-700 font-bold uppercase tracking-widest mb-2">Message</label>
                   <textarea required rows={6} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
                     className="w-full bg-white/70 border border-stone-200 rounded-xl px-4 py-3 text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-200 transition-all resize-none shadow-sm" placeholder="Tell me about your project..." />
                 </div>
@@ -108,8 +108,8 @@ export default function Contact() {
         </div>
 
         <motion.div className="mt-24 pt-8 border-t border-stone-900/10 flex flex-col sm:flex-row items-center justify-between gap-4" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
-          <p className="text-xs text-stone-500 font-mono">© 2025 Prashant Tiwari · Built with Next.js & Tailwind CSS</p>
-          <p className="text-xs text-stone-400 font-mono italic">Where Logic Meets Canvas.</p>
+          <p className="text-xs text-stone-700 font-mono">© 2025 Prashant Tiwari · Built with Next.js & Tailwind CSS</p>
+          <p className="text-xs text-stone-700 font-mono italic">Where Logic Meets Canvas.</p>
         </motion.div>
       </div>
     </section>

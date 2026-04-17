@@ -15,6 +15,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const COBALT = "#174EA6";
   const [activeSection, setActiveSection] = useState("hero");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -64,9 +65,10 @@ export default function Navbar() {
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className={`relative w-full text-left px-4 py-3 text-sm font-semibold tracking-wide transition-colors duration-200 rounded-lg ${
-                    isActive ? "text-black bg-stone-100/80 border border-stone-200/60" : "text-stone-800 hover:text-black hover:bg-stone-50"
+                  className={`relative w-full text-left px-4 py-3 text-sm font-semibold tracking-wide transition-colors duration-200 rounded-lg border ${
+                    isActive ? "text-black bg-white border-black/30" : "text-stone-800 border-transparent hover:text-black hover:bg-stone-50"
                   }`}
+                  style={isActive ? { boxShadow: `inset 2px 0 0 ${COBALT}` } : undefined}
                 >
                   <span className="relative z-10">{link.label}</span>
                 </button>
@@ -78,7 +80,7 @@ export default function Navbar() {
           <div className="mt-auto">
             <button
               onClick={() => setNotifyOpen(true)}
-              className="text-sm font-bold text-white bg-black hover:bg-gray-800 px-5 py-2.5 rounded-full transition-all duration-200 shadow-md shadow-black/10 hover:shadow-lg"
+              className="text-sm font-bold text-white bg-black hover:bg-stone-800 px-5 py-2.5 rounded-full transition-all duration-200 shadow-md shadow-black/10 hover:shadow-lg"
             >
               Notify Me
             </button>
@@ -101,7 +103,7 @@ export default function Navbar() {
               <motion.button
                 key={link.href}
                 onClick={() => scrollTo(link.href)}
-                className="text-3xl font-bold text-stone-900 hover:text-stone-500 transition-colors"
+                className="text-3xl font-bold text-stone-900 hover:text-black transition-colors"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}

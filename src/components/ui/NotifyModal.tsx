@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useState } from "react";
 
 type Props = { open: boolean; onClose: () => void };
+const COBALT = "#174EA6";
 
 export default function NotifyModal({ open, onClose }: Props) {
   const [email, setEmail] = useState("");
@@ -59,21 +60,21 @@ export default function NotifyModal({ open, onClose }: Props) {
             >
               <button
                 onClick={onClose}
-                className="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 hover:bg-stone-200 transition-colors"
+                className="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-700 hover:bg-stone-200 transition-colors"
               >
                 <X size={14} />
               </button>
 
               <div className="mb-6">
-                <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-4">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="w-10 h-10 rounded-2xl bg-white border flex items-center justify-center mb-4" style={{ borderColor: COBALT }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={COBALT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                   </svg>
                 </div>
                 <h2 className="text-2xl font-bold text-stone-900 mb-2" style={{ fontFamily: "'Syne', sans-serif" }}>
                   Stay informed about updates
                 </h2>
-                <p className="text-sm text-stone-500 leading-relaxed">
+                <p className="text-sm text-stone-700 leading-relaxed">
                   Subscribe to my newsletter, and I'll notify you whenever there's a new update in the portfolio website.
                 </p>
               </div>
@@ -86,7 +87,7 @@ export default function NotifyModal({ open, onClose }: Props) {
                 >
                   <div className="text-3xl mb-3">📧</div>
                   <p className="text-stone-700 font-medium">Check your email!</p>
-                  <p className="text-sm text-stone-400 mt-1">Click the verification link to complete your subscription.</p>
+                  <p className="text-sm text-stone-700 mt-1">Click the verification link to complete your subscription.</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-3">
@@ -96,18 +97,18 @@ export default function NotifyModal({ open, onClose }: Props) {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="your@email.com"
-                    className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3.5 text-sm text-stone-900 placeholder-stone-300 focus:outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all"
+                    className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3.5 text-sm text-stone-900 placeholder-stone-500 focus:outline-none focus:border-[#174EA6] focus:ring-2 focus:ring-[#174EA6]/20 transition-all"
                   />
                   {/* Honeypot for spam protection */}
                   <input type="text" name="honeypot" style={{ display: 'none' }} />
-                  {status === "error" && <p className="text-xs text-red-400 font-mono">Something went wrong. Please try again.</p>}
+                  {status === "error" && <p className="text-xs text-red-600 font-mono">Something went wrong. Please try again.</p>}
                   <button
                     type="submit"
                     className="w-full bg-stone-900 hover:bg-stone-700 text-white font-semibold text-sm py-3.5 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
                   >
                     Notify Me
                   </button>
-                  <p className="text-[11px] text-stone-400 text-center font-mono">No spam. Unsubscribe anytime.</p>
+                  <p className="text-xs text-stone-700 text-center font-mono">No spam. Unsubscribe anytime.</p>
                 </form>
               )}
             </motion.div>

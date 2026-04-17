@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${syne.variable} ${spaceMono.variable} scroll-smooth`}>
-      <body className="antialiased font-sans selection:bg-blue-100 selection:text-blue-800 cursor-none pl-64">
+      <body className="antialiased font-sans selection:bg-[#174EA6] selection:text-white cursor-none pl-64">
         <LoadingScreen />
         <CustomCursor />
         <Navbar />

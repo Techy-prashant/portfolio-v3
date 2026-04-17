@@ -8,6 +8,7 @@ import { ExternalLink, Play } from "lucide-react";
 
 const tabs = ["Tech Projects", "Content Projects", "Creative Frames"] as const;
 type Tab = (typeof tabs)[number];
+const COBALT = "#174EA6";
 
 const contentProjects = [
   { id: "c1", title: "Paradox IIT Madras — Event Highlights", description: "Full event coverage reel for Paradox, IIT Madras's annual techno-management fest. Over 60K views.", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80", tags: ["DaVinci Resolve", "After Effects", "Event"] },
@@ -44,13 +45,13 @@ function VideoCard({ project }: { project: typeof contentProjects[0] }) {
             </div>
           </div>
         )}
-        <span className="absolute top-3 left-3 text-[10px] font-mono uppercase tracking-widest bg-white/90 text-stone-700 font-bold px-2 py-1 rounded-full border border-stone-200">Video</span>
+        <span className="absolute top-3 left-3 text-xs font-mono uppercase tracking-widest bg-white/90 text-stone-800 font-bold px-2 py-1 rounded-full border border-stone-300">Video</span>
       </div>
       <div className="p-5">
         <h3 className="text-base font-bold text-stone-900 mb-2 leading-snug">{project.title}</h3>
-        <p className="text-sm text-stone-600 leading-relaxed mb-4 line-clamp-2">{project.description}</p>
+        <p className="text-sm text-stone-700 leading-relaxed mb-4 line-clamp-2">{project.description}</p>
         <div className="flex flex-wrap gap-1.5">
-          {project.tags.map(t => <span key={t} className="text-[10px] font-mono bg-stone-100 text-stone-700 font-semibold border border-stone-200 px-2 py-0.5 rounded-md">{t}</span>)}
+          {project.tags.map(t => <span key={t} className="text-xs font-mono bg-stone-100 text-stone-800 font-semibold border border-stone-300 px-2 py-0.5 rounded-md">{t}</span>)}
         </div>
       </div>
     </motion.div>
@@ -65,7 +66,7 @@ export default function Projects() {
         <motion.div className="flex items-center gap-3 mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>Projects</span>
           <span className="flex-1 h-px bg-stone-900/20" />
-          <span className="text-xs font-mono text-stone-500 tracking-widest uppercase">04</span>
+          <span className="text-sm font-mono font-bold text-stone-700 tracking-widest uppercase">04</span>
         </motion.div>
 
         <motion.h2 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} style={{ fontFamily: "'Syne', sans-serif" }}>
@@ -75,8 +76,8 @@ export default function Projects() {
         {/* Tabs */}
         <motion.div className="flex gap-1 glass-card rounded-2xl p-1.5 w-fit mb-12 shadow-lg shadow-black/15" initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }}>
           {tabs.map((tab) => (
-            <button key={tab} onClick={() => setActiveTab(tab)} className={`relative px-5 py-2.5 text-sm font-semibold rounded-xl transition-colors duration-200 ${activeTab === tab ? "text-stone-900" : "text-stone-500 hover:text-stone-800"}`}>
-              {activeTab === tab && <motion.span layoutId="tab-bg" className="absolute inset-0 bg-white rounded-xl shadow-md shadow-black/10 border border-stone-200/60" transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`relative px-5 py-2.5 text-sm font-semibold rounded-xl transition-colors duration-200 ${activeTab === tab ? "text-black" : "text-stone-700 hover:text-black"}`}>
+              {activeTab === tab && <motion.span layoutId="tab-bg" className="absolute inset-0 bg-white rounded-xl shadow-md shadow-black/10 border" style={{ borderColor: COBALT }} transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
               <span className="relative z-10">{tab}</span>
             </button>
           ))}
@@ -96,7 +97,7 @@ export default function Projects() {
             )}
             {activeTab === "Creative Frames" && (
               <div>
-                <p className="text-sm text-stone-600 mb-8 max-w-md">A curated selection of frames — captured with intention, composed with precision.</p>
+                <p className="text-sm text-stone-700 mb-8 max-w-md">A curated selection of frames — captured with intention, composed with precision.</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {creativeFrames.map((frame, i) => (
                     <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/3" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.07 }} whileHover={{ scale: 1.02 }}>
