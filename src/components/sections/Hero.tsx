@@ -169,6 +169,17 @@ export default function Hero() {
                 </span>
               ))}
             </motion.div>
+
+            <motion.button
+              onClick={() => scrollToSection("about")}
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 py-2 text-xs font-mono uppercase tracking-[0.14em] text-stone-700 hover:bg-white transition-colors"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.85 }}
+            >
+              Scroll to explore
+              <ArrowDown size={14} />
+            </motion.button>
           </motion.div>
 
           <motion.div
@@ -257,16 +268,6 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.button
-          onClick={() => scrollToSection("about")}
-          className="mt-8 sm:mt-2 mx-auto lg:mx-0 inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 py-2 text-xs font-mono uppercase tracking-[0.14em] text-stone-700 hover:bg-white transition-colors"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.85 }}
-        >
-          Scroll to explore
-          <ArrowDown size={14} />
-        </motion.button>
       </div>
     </section>
   );
