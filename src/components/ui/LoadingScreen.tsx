@@ -15,7 +15,7 @@ export default function LoadingScreen() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[9998] flex flex-col items-center justify-center bg-white"
+          className="fixed inset-0 z-[9998] flex flex-col items-center justify-center bg-slate-50"
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.55, ease: "easeInOut" }}
         >
@@ -51,7 +51,7 @@ export default function LoadingScreen() {
             </motion.div>
           </div>
           <motion.p
-            className="mt-6 text-[11px] font-mono text-stone-400 tracking-[0.35em] uppercase"
+            className="mt-6 text-[11px] font-mono text-stone-700 tracking-[0.35em] uppercase"
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ repeat: Infinity, duration: 1.4 }}
           >

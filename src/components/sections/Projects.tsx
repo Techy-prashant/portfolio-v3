@@ -10,25 +10,105 @@ const tabs = ["Tech Projects", "Content Projects", "Creative Frames"] as const;
 type Tab = (typeof tabs)[number];
 const COBALT = "#174EA6";
 
-const contentProjects = [
-  { id: "c1", title: "Paradox IIT Madras — Event Highlights", description: "Full event coverage reel for Paradox, IIT Madras's annual techno-management fest. Over 60K views.", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80", tags: ["DaVinci Resolve", "After Effects", "Event"] },
-  { id: "c2", title: "Namdapha House — Cultural Fest Promo", description: "Cinematic promo produced for the annual cultural festival. Reached 1M+ users across platforms.", videoUrl: "https://www.w3schools.com/html/movie.mp4", thumbnail: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80", tags: ["Premiere Pro", "Blender", "Motion Graphics"] },
-  { id: "c3", title: "Adniko — Brand Campaign", description: "Startup brand launch campaign video for Adniko. End-to-end production from script to colour grade.", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80", tags: ["Waveform 13", "Canva Pro", "Brand"] },
+type ContentProject = {
+  id: string;
+  title: string;
+  description: string;
+  videoUrl: string;
+  thumbnail: string;
+  tags: string[];
+  embedUrl?: string;
+};
+
+const contentProjects: ContentProject[] = [
+  { id: "c1", title: "Shiv-Ratri — Highlights", description: "For Engagement purposes.", videoUrl: "https://vimeo.com/1178364534?fl=pl&fe=cm", embedUrl: "https://player.vimeo.com/video/1178364534?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1", thumbnail: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80", tags: ["DaVinci Resolve", "After Effects", "Cultural Festival"]},
+  { id: "c2", title: "Paradox Saavan — Fest Promo", description: "Cinematic promo produced for the annual cultural festival. Reached 1M+ users across platforms by many of these videos.", videoUrl: "https://vimeo.com/1178362573?fl=pl&fe=cm", embedUrl: "https://player.vimeo.com/video/1178362573?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1", thumbnail: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80", tags: ["Premiere Pro", "Blender", "Motion Graphics"] },
+  { id: "c3", title: "Namdapha House — Website Campaign", description: "Website launch campaign video for Namdapha House. End-to-end production from script to colour grade.", videoUrl: "https://vimeo.com/1178364640?fl=pl&fe=cm", embedUrl: "https://player.vimeo.com/video/1178364640?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1", thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80", tags:
+    ["Waveform 13", "Canva Pro", "Brand"] },
 ];
 
 const creativeFrames = [
-  { id: "f1", src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80", alt: "Architecture" },
-  { id: "f2", src: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80", alt: "City Lights" },
-  { id: "f3", src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80", alt: "Mountains" },
-  { id: "f4", src: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80", alt: "Nature" },
-  { id: "f5", src: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600&q=80", alt: "Urban" },
-  { id: "f6", src: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600&q=80", alt: "Landscape" },
+  { id: "f1", src: "https://socialportfolio-rho.vercel.app/assets/images/poster1.png", alt: "Vasta" },
+  { id: "f2", src: "https://socialportfolio-rho.vercel.app/assets/images/poster2.png", alt: "Bhasma" },
+  { id: "f3", src: "https://socialportfolio-rho.vercel.app/assets/images/poster5.png", alt: "Dancing Angel" },
+  { id: "f4", src: "https://socialportfolio-rho.vercel.app/assets/images/poster6.png", alt: "Margazhi'26" },
+  { id: "f5", src: "https://socialportfolio-rho.vercel.app/assets/images/poster3.png", alt: "BMW" },
+  { id: "f6", src: "https://socialportfolio-rho.vercel.app/assets/images/poster4.png", alt: "Betal" },
 ];
 
-function VideoCard({ project }: { project: typeof contentProjects[0] }) {
+const creativeFramePlaceholders = [
+  {
+    id: "placeholder-1",
+    label: "Bhole ghat",
+    alt: "Bhole ghat",
+    src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/folders/Bhole%20ghat.png",
+  },
+  {
+    id: "placeholder-2",
+    label: "Bihari ji",
+    alt: "Bihari ji",
+    src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/folders/Bihari%20ji.png",
+  },
+  {
+    id: "placeholder-3",
+    label: "Duck",
+    alt: "Duck",
+    src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/folders/Duck.png",
+  },
+  {
+    id: "placeholder-4",
+    label: "Flower",
+    alt: "Flower",
+    src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/folders/Flower%20%F0%9F%8C%B8.png",
+  },
+  {
+    id: "placeholder-5",
+    label: "Besties on Streets",
+    alt: "Besties on Streets",
+    src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/folders/besties%20on%20Streets.png",
+  },
+  {
+    id: "placeholder-6",
+    label: "RadhaRaman Mandir",
+    alt: "RadhaRaman Mandir",
+    src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/RadhaRaman%20Mandir.png",
+  },
+  {
+    id: "placeholder-7",
+    label: "Self Cleaning",
+    alt: "Self Cleaning",
+    src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/Self%20Cleaning.png",
+  },
+  {
+    id: "placeholder-8",
+    label: "Ancient Architecture",
+    alt: "Ancient Architecture",
+    src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/Random.png",
+  },
+];
+
+function VideoCard({ project }: { project: ContentProject }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+  const [embedPlaying, setEmbedPlaying] = useState(false);
+
+  const buildVimeoEmbedUrl = (baseUrl: string, autoplay: boolean) => {
+    try {
+      const url = new URL(baseUrl);
+      url.searchParams.set("autoplay", autoplay ? "1" : "0");
+      url.searchParams.set("muted", "1");
+      url.searchParams.set("loop", "1");
+      return url.toString();
+    } catch {
+      return baseUrl;
+    }
+  };
+
   const handleHover = (enter: boolean) => {
+    if (project.embedUrl) {
+      setEmbedPlaying(enter);
+      return;
+    }
     if (!videoRef.current) return;
     if (enter) { videoRef.current.play().catch(() => {}); setPlaying(true); }
     else { videoRef.current.pause(); videoRef.current.currentTime = 0; setPlaying(false); }
@@ -36,9 +116,22 @@ function VideoCard({ project }: { project: typeof contentProjects[0] }) {
   return (
     <motion.div className="group glass-card rounded-2xl overflow-hidden shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 transition-all duration-500" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} whileHover={{ y: -4 }} onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}>
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9" }}>
-        <img src={project.thumbnail} alt={project.title} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${playing ? "opacity-0" : "opacity-100"}`} />
-        <video ref={videoRef} src={project.videoUrl} className="w-full h-full object-cover" muted loop playsInline />
-        {!playing && (
+        {project.embedUrl ? (
+          <iframe
+            src={buildVimeoEmbedUrl(project.embedUrl, embedPlaying)}
+            className="absolute inset-0 w-full h-full"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            title={project.title}
+          />
+        ) : (
+          <>
+            <img src={project.thumbnail} alt={project.title} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${playing ? "opacity-0" : "opacity-100"}`} />
+            <video ref={videoRef} src={project.videoUrl} className="w-full h-full object-cover" muted loop playsInline />
+          </>
+        )}
+        {!playing && !project.embedUrl && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/10">
             <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
               <Play size={18} className="text-stone-800 ml-0.5" fill="currentColor" />
@@ -91,19 +184,37 @@ export default function Projects() {
               </div>
             )}
             {activeTab === "Content Projects" && (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {contentProjects.map((p) => <VideoCard key={p.id} project={p} />)}
+              <div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {contentProjects.map((p) => <VideoCard key={p.id} project={p} />)}
+                </div>
+                <div className="mt-10">
+                  <p className="text-sm text-stone-700 mb-6 max-w-xl">Creative Content, These are some of my favorite creations, These are mainly focused on showcasing my skills in multimedia production.</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {creativeFrames.map((frame, i) => (
+                      <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/5" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.05 }} whileHover={{ scale: 1.02 }}>
+                        <img src={frame.src} alt={frame.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <span className="absolute bottom-3 left-3 text-[10px] font-mono text-black/90 font-bold opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">{frame.alt}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
             {activeTab === "Creative Frames" && (
               <div>
-                <p className="text-sm text-stone-700 mb-8 max-w-md">A curated selection of frames — captured with intention, composed with precision.</p>
+                <p className="text-sm text-stone-700 mb-8 max-w-md">These photos are taken from VIVO T1 5G/Huawei Matepad pro, Photography is 1 or my many hobbies. I like to capture moments that tell a story. With each of my frames i carry a piece of my soul, that i cherish with all my heart.</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {creativeFrames.map((frame, i) => (
-                    <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/3" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.07 }} whileHover={{ scale: 1.02 }}>
-                      <img src={frame.src} alt={frame.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  {creativeFramePlaceholders.map((frame, i) => (
+                    <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/5" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.07 }} whileHover={{ scale: 1.02 }}>
+                      <img
+                        src={frame.src}
+                        alt={frame.alt}
+                        className="w-full h-full object-cover transition-transform duration-700 scale-125 group-hover:scale-[1.12]"
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-white/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <span className="absolute bottom-3 left-3 text-[10px] font-mono text-black/90 font-bold opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">{frame.alt}</span>
+                      <span className="absolute bottom-3 left-3 text-[10px] font-mono text-black/90 font-bold uppercase tracking-widest">{frame.label}</span>
                     </motion.div>
                   ))}
                 </div>

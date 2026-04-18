@@ -1,7 +1,7 @@
 export const personalInfo = {
   name: "Prashant Tiwari",
   roles: [
-    "Full-Stack Developer",
+    "Tech-Developer",
     "Multimedia Strategist",
     "Data Science Engineer",
     "Creative Technologist",
@@ -11,7 +11,7 @@ export const personalInfo = {
   location: "IIT Madras, Chennai",
   resumeUrl: "/Prashant_Resume.pdf",
   github: "https://github.com/Techy-prashant",
-  linkedin: "https://linkedin.com/in/prashant-tiwari",
+  linkedin: "https://www.linkedin.com/in/prashant-tiwari-6b440a313/",
 };
 
 export const heroContent = {
@@ -125,8 +125,8 @@ export const projectsData: Project[] = [
       "Collaborated in the full-stack development and deployment of the official Namdapha House website, designed to reliably serve, manage, and scale for a community of 5,000+ students.",
     techStack: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
     thumbnailUrl:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
-    externalLink: "https://namdapha.iitmbs.com",
+      "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/Namdapha.png",
+    externalLink: "https://namdapha.iitmbs.org",
   },
   {
     id: "tesseract-website",
@@ -137,8 +137,8 @@ export const projectsData: Project[] = [
       "Led the end-to-end design and development of a modern, highly interactive club website hosted via Netlify to boost student engagement and streamline club updates.",
     techStack: ["React.js", "HTML5", "CSS3", "JavaScript", "Figma"],
     thumbnailUrl:
-      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80",
-    externalLink: "https://tesseract.netlify.app",
+      "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/brave_screenshot_tesseractfun.netlify.app.png",
+    externalLink: "https://tesseractfun.netlify.app",
   },
   {
     id: "projectos",
@@ -146,11 +146,11 @@ export const projectsData: Project[] = [
     category: "Systems / OS",
     role: "Selected Contributor",
     description:
-      "Selected for the ProjectOS startup initiative — developing India's first PC-based OS alongside fellow students, focusing on system-level architecture and UI/UX design.",
+      "Selected for the ProjectOS startup initiative | developing India's first PC-based OS alongside fellow students, focusing on system-level architecture and UI/UX design.",
     techStack: ["C", "C++", "Linux", "System Design"],
     thumbnailUrl:
-      "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=800&q=80",
-    externalLink: "#",
+      "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/ProjectOS.png",
+    externalLink: "https://github.com/Project-Nirmaan",
   },
 ];
 
@@ -173,7 +173,7 @@ export const socialLinks = [
   {
     platform: "LinkedIn",
     handle: "/prashant-tiwari",
-    url: "https://linkedin.com/in/prashant-tiwari",
+    url: "https://www.linkedin.com/in/prashant-tiwari-6b440a313/",
     icon: "linkedin",
   },
   {

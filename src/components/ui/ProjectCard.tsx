@@ -13,7 +13,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 5, delay: index * 0, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4 }}
     >
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9" }}>
