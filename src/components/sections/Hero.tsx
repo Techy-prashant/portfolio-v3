@@ -11,8 +11,7 @@ const slides = [
   { src: "/myself-web.png", label: "Web Developer" },
 ];
 
-const roles = ["Full-Stack Developer", "Data Scientist", "Multimedia Technologist"];
-const COBALT = "#0047AB";
+const roles = personalInfo.roles.slice(0, 3);
 const metrics = ["1M+ Reach", "150K+ Views", "3 Domains"];
 
 export default function Hero() {
@@ -64,7 +63,7 @@ export default function Hero() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-24 pb-14 sm:pb-16">
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-8 items-center min-h-[calc(100vh-96px)]">
           <motion.div
-            className="order-2 lg:order-1"
+            className="order-1 lg:order-1"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -173,7 +172,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            className="order-1 lg:order-2 relative flex justify-center lg:justify-end"
+            className="order-2 lg:order-2 relative flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 42 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
