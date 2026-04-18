@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
 import LoadingScreen from "@/components/ui/LoadingScreen";
+import ChatbotWidget from "@/components/ui/ChatbotWidget";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -35,12 +36,12 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Prashant Tiwari — Where Logic Meets Canvas",
+  title: "Prashant Tiwari | Where Logic Meets Canvas",
   description: "Full-Stack Developer, Multimedia Strategist & Data Science student at IIT Madras.",
   keywords: ["Prashant Tiwari", "IIT Madras", "Full-Stack Developer", "Multimedia", "Data Science"],
   authors: [{ name: "Prashant Tiwari" }],
   openGraph: {
-    title: "Prashant Tiwari — Where Logic Meets Canvas",
+    title: "Prashant Tiwari | Where Logic Meets Canvas",
     description: "Tech-Developer & Multimedia Strategist at IIT Madras",
     type: "website",
   },
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CustomCursor />
         <Navbar />
         {children}
+        <ChatbotWidget />
       </body>
     </html>
   );

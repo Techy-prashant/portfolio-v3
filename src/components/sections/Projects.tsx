@@ -45,8 +45,8 @@ const creativeFramePlaceholders = [
   },
   {
     id: "placeholder-2",
-    label: "Bihari ji",
-    alt: "Bihari ji",
+    label: "Garud Govind Temple",
+    alt: "Garud Govind Temple",
     src: "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/folders/Bihari%20ji.png",
   },
   {
@@ -204,7 +204,7 @@ export default function Projects() {
             )}
             {activeTab === "Creative Frames" && (
               <div>
-                <p className="text-sm text-stone-700 mb-8 max-w-md">These photos are taken from VIVO T1 5G/Huawei Matepad pro, Photography is 1 or my many hobbies. I like to capture moments that tell a story. With each of my frames i carry a piece of my soul, that i cherish with all my heart.</p>
+                <p className="text-sm text-stone-700 mb-8 max-w-md">These photos are taken from VIVO T1 5G/Huawei Matepad pro, Photography is one of the many hobbies. I like to capture moments that tell a story. With each of my frames i carry a piece of my soul, that i cherish with all my heart.</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {creativeFramePlaceholders.map((frame, i) => (
                     <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/5" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.07 }} whileHover={{ scale: 1.02 }}>
