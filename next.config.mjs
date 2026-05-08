@@ -6,6 +6,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "socialportfolio-rho.vercel.app",
+      },
     ],
   },
 };
