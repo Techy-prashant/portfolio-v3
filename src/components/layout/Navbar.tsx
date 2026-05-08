@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { personalInfo } from "@/data/content";
 import NotifyModal from "@/components/ui/NotifyModal";
@@ -54,7 +53,7 @@ export default function Navbar() {
       >
         <nav className="h-full px-4 sm:px-6 flex items-center justify-between gap-4">
           <button onClick={() => scrollTo("#hero")} className="flex items-center gap-3">
-            <Image src="/logo-light.svg" alt={personalInfo.name} className="h-10 w-auto" width={40} height={40} priority />
+            <img src="/logo-light.svg" alt={personalInfo.name} className="h-10 w-auto" />
           </button>
 
           <div className="flex items-center gap-2">
@@ -84,7 +83,7 @@ export default function Navbar() {
         <nav className="flex flex-col items-start py-6 px-4 gap-4 h-full font-sans">
           {/* Logo */}
           <button onClick={() => scrollTo("#hero")} className="group flex-shrink-0 mb-8">
-            <Image src="/logo-light.svg" alt={personalInfo.name} className="h-14 w-auto group-hover:opacity-70 transition-opacity duration-200" width={56} height={56} priority />
+            <img src="/logo-light.svg" alt={personalInfo.name} className="h-14 w-auto group-hover:opacity-70 transition-opacity duration-200" />
           </button>
 
           {/* Desktop Nav Links */}

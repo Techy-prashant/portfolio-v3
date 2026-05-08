@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { ArrowDown, ArrowUpRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { heroContent, personalInfo } from "@/data/content";
 
@@ -19,7 +18,12 @@ export default function Hero() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
-    // rely on next/image for optimized loading; no manual preloads here
+  useEffect(() => {
+    slides.forEach(({ src }) => {
+      const image = new Image();
+      image.src = src;
+    });
+  }, []);
 
   // Auto-advance slider
   useEffect(() => {
@@ -212,13 +216,14 @@ export default function Hero() {
                       transition={{ duration: 0.64, ease: [0.22, 1, 0.36, 1] }}
                       className="absolute inset-0 h-full w-full"
                     >
-                      <Image
+                      <img
                         src={slides[current].src}
                         alt={slides[current].label}
-                        className="object-cover object-top"
-                        fill
-                        sizes="(max-width: 640px) 100vw, 440px"
-                        priority={current === 0}
+                        className="h-full w-full object-cover object-top"
+                        loading="eager"
+                        decoding="async"
+                        width="1000"
+                        height="1500"
                       />
                     </motion.div>
                   </AnimatePresence>

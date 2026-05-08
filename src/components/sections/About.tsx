@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { aboutContent, personalInfo } from "@/data/content";
 import { GraduationCap, MapPin, Phone, Mail } from "lucide-react";
-import SectionGrid from "@/components/ui/SectionGrid";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -13,25 +12,25 @@ const fadeUp = {
 export default function About() {
   return (
     <section id="about" className="py-28 px-6 sm:px-10">
-      <motion.div className="flex items-center gap-3 mb-16" variants={fadeUp} custom={0} initial="hidden" whileInView="show" viewport={{ once: true }}>
-        <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>About</span>
-        <span className="flex-1 h-px bg-stone-900/20" />
-        <span className="text-sm font-mono font-bold text-stone-700 tracking-widest uppercase">01</span>
-      </motion.div>
+      <div className="max-w-7xl mx-auto">
+        <motion.div className="flex items-center gap-3 mb-16" variants={fadeUp} custom={0} initial="hidden" whileInView="show" viewport={{ once: true }}>
+          <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>About</span>
+          <span className="flex-1 h-px bg-stone-900/20" />
+          <span className="text-sm font-mono font-bold text-stone-700 tracking-widest uppercase">01</span>
+        </motion.div>
 
-      <SectionGrid gridClassName="items-start">
-        <div>
-          <motion.h2 className="text-4xl sm:text-5xl font-bold text-stone-900 mb-8 leading-tight" variants={fadeUp} custom={1} initial="hidden" whileInView="show" viewport={{ once: true }} style={{ fontFamily: "'Syne', sans-serif" }}>
-            Turning complex systems into elegant solutions.
-          </motion.h2>
-          {aboutContent.paragraphs.map((para, i) => (
-            <motion.p key={i} className="text-stone-700 leading-relaxed mb-5 text-[15px]" variants={fadeUp} custom={i + 2} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              {para}
-            </motion.p>
-          ))}
-        </div>
+        <div className="grid lg:grid-cols-2 gap-10 items-start">
+          <div>
+            <motion.h2 className="text-4xl sm:text-5xl font-bold text-stone-900 mb-8 leading-tight" variants={fadeUp} custom={1} initial="hidden" whileInView="show" viewport={{ once: true }} style={{ fontFamily: "'Syne', sans-serif" }}>
+              Turning complex systems into elegant solutions.
+            </motion.h2>
+            {aboutContent.paragraphs.map((para, i) => (
+              <motion.p key={i} className="text-stone-700 leading-relaxed mb-5 text-[15px]" variants={fadeUp} custom={i + 2} initial="hidden" whileInView="show" viewport={{ once: true }}>
+                {para}
+              </motion.p>
+            ))}
+          </div>
 
-        <div>
           <motion.div className="space-y-4" variants={fadeUp} custom={3} initial="hidden" whileInView="show" viewport={{ once: true }}>
             <div className="glass-card rounded-2xl p-6 shadow-lg shadow-black/15">
               <div className="flex items-start gap-4">
@@ -77,7 +76,7 @@ export default function About() {
             </div>
           </motion.div>
         </div>
-      </SectionGrid>
+      </div>
     </section>
   );
 }

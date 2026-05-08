@@ -6,7 +6,6 @@ import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import ChatbotWidget from "@/components/ui/ChatbotWidget";
-import BackgroundGrid from "@/components/ui/BackgroundGrid";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -20,7 +19,6 @@ const spaceMono = Space_Mono({
   variable: "--font-mono",
   display: "swap",
   weight: ["400", "700"],
-  preload: false,
 });
 
 const manrope = Manrope({
@@ -28,7 +26,6 @@ const manrope = Manrope({
   variable: "--font-ui",
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
-  preload: false,
 });
 
 const caveat = Caveat({
@@ -36,7 +33,6 @@ const caveat = Caveat({
   variable: "--font-script",
   display: "swap",
   weight: ["500", "700"],
-  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -58,7 +54,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LoadingScreen />
         <CustomCursor />
         <Navbar />
-        <BackgroundGrid />
         {children}
         <ChatbotWidget />
       </body>

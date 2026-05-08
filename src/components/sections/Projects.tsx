@@ -2,8 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef } from "react";
-import SectionGrid from "@/components/ui/SectionGrid";
-import Image from "next/image";
 import { projectsData } from "@/data/content";
 import ProjectCard from "@/components/ui/ProjectCard";
 import { ExternalLink, Play } from "lucide-react";
@@ -129,7 +127,7 @@ function VideoCard({ project }: { project: ContentProject }) {
           />
         ) : (
           <>
-            <Image src={project.thumbnail} alt={project.title} fill className={`absolute inset-0 object-cover transition-opacity duration-500 ${playing ? "opacity-0" : "opacity-100"}`} sizes="(max-width: 640px) 100vw, 360px" />
+            <img src={project.thumbnail} alt={project.title} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${playing ? "opacity-0" : "opacity-100"}`} />
             <video ref={videoRef} src={project.videoUrl} className="w-full h-full object-cover" muted loop playsInline />
           </>
         )}
@@ -157,73 +155,74 @@ export default function Projects() {
   const [activeTab, setActiveTab] = useState<Tab>("Tech Projects");
   return (
     <section id="projects" className="py-28 px-6 sm:px-10">
-      <motion.div className="flex items-center gap-3 mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+      <div className="max-w-7xl mx-auto">
+        <motion.div className="flex items-center gap-3 mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>Projects</span>
           <span className="flex-1 h-px bg-stone-900/20" />
           <span className="text-sm font-mono font-bold text-stone-700 tracking-widest uppercase">04</span>
         </motion.div>
 
-        <SectionGrid>
-          <div>
-            <motion.h2 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} style={{ fontFamily: "'Syne', sans-serif" }}>
-              Things I've built.
-            </motion.h2>
+        <motion.h2 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} style={{ fontFamily: "'Syne', sans-serif" }}>
+          Things I've built.
+        </motion.h2>
 
-            <motion.div className="flex gap-1 glass-card rounded-2xl p-1.5 w-fit mb-6 shadow-lg shadow-black/15" initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }}>
-              {tabs.map((tab) => (
-                <button key={tab} onClick={() => setActiveTab(tab)} className={`relative px-5 py-2.5 text-sm font-semibold rounded-xl transition-colors duration-200 ${activeTab === tab ? "text-black" : "text-stone-700 hover:text-black"}`}>
-                  {activeTab === tab && <motion.span layoutId="tab-bg" className="absolute inset-0 bg-white rounded-xl shadow-md shadow-black/10 border" style={{ borderColor: COBALT }} transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
-                  <span className="relative z-10">{tab}</span>
-                </button>
-              ))}
-            </motion.div>
-          </div>
+        {/* Tabs */}
+        <motion.div className="flex gap-1 glass-card rounded-2xl p-1.5 w-fit mb-12 shadow-lg shadow-black/15" initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }}>
+          {tabs.map((tab) => (
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`relative px-5 py-2.5 text-sm font-semibold rounded-xl transition-colors duration-200 ${activeTab === tab ? "text-black" : "text-stone-700 hover:text-black"}`}>
+              {activeTab === tab && <motion.span layoutId="tab-bg" className="absolute inset-0 bg-white rounded-xl shadow-md shadow-black/10 border" style={{ borderColor: COBALT }} transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
+              <span className="relative z-10">{tab}</span>
+            </button>
+          ))}
+        </motion.div>
 
-          <div>
-            <AnimatePresence mode="wait">
-              <motion.div key={activeTab} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.4 }}>
-                {activeTab === "Tech Projects" && (
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {projectsData.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
+        <AnimatePresence mode="wait">
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.4 }}>
+            {activeTab === "Tech Projects" && (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {projectsData.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
+              </div>
+            )}
+            {activeTab === "Content Projects" && (
+              <div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {contentProjects.map((p) => <VideoCard key={p.id} project={p} />)}
+                </div>
+                <div className="mt-10">
+                  <p className="text-sm text-stone-700 mb-6 max-w-xl">Creative Content, These are some of my favorite creations, These are mainly focused on showcasing my skills in multimedia production.</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {creativeFrames.map((frame, i) => (
+                      <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/5" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.05 }} whileHover={{ scale: 1.02 }}>
+                        <img src={frame.src} alt={frame.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <span className="absolute bottom-3 left-3 text-[10px] font-mono text-black/90 font-bold opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">{frame.alt}</span>
+                      </motion.div>
+                    ))}
                   </div>
-                )}
-                {activeTab === "Content Projects" && (
-                  <div>
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {contentProjects.map((p) => <VideoCard key={p.id} project={p} />)}
-                    </div>
-                    <div className="mt-10">
-                      <p className="text-sm text-stone-700 mb-6 max-w-xl">Creative Content, These are some of my favorite creations, These are mainly focused on showcasing my skills in multimedia production.</p>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        {creativeFrames.map((frame, i) => (
-                          <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/5" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.05 }} whileHover={{ scale: 1.02 }}>
-                            <Image src={frame.src} alt={frame.alt} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 640px) 50vw, 240px" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-white/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <span className="absolute bottom-3 left-3 text-[10px] font-mono text-black/90 font-bold opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">{frame.alt}</span>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {activeTab === "Creative Frames" && (
-                  <div>
-                    <p className="text-sm text-stone-700 mb-8 max-w-md">These photos are taken from VIVO T1 5G/Huawei Matepad pro, Photography is one of the many hobbies. I like to capture moments that tell a story. With each of my frames i carry a piece of my soul, that i cherish with all my heart.</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                      {creativeFramePlaceholders.map((frame, i) => (
-                        <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/5" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.07 }} whileHover={{ scale: 1.02 }}>
-                          <Image src={frame.src} alt={frame.alt} fill className="object-cover transition-transform duration-700 scale-125 group-hover:scale-[1.12]" sizes="(max-width: 640px) 50vw, 240px" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-white/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                          <span className="absolute bottom-3 left-3 text-[10px] font-mono text-black/90 font-bold uppercase tracking-widest">{frame.label}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </SectionGrid>
+                </div>
+              </div>
+            )}
+            {activeTab === "Creative Frames" && (
+              <div>
+                <p className="text-sm text-stone-700 mb-8 max-w-md">These photos are taken from VIVO T1 5G/Huawei Matepad pro, Photography is one of the many hobbies. I like to capture moments that tell a story. With each of my frames i carry a piece of my soul, that i cherish with all my heart.</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {creativeFramePlaceholders.map((frame, i) => (
+                    <motion.div key={frame.id} className="group relative overflow-hidden rounded-2xl shadow-xl shadow-black/20" style={{ aspectRatio: "4/5" }} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: i * 0.07 }} whileHover={{ scale: 1.02 }}>
+                      <img
+                        src={frame.src}
+                        alt={frame.alt}
+                        className="w-full h-full object-cover transition-transform duration-700 scale-125 group-hover:scale-[1.12]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-white/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <span className="absolute bottom-3 left-3 text-[10px] font-mono text-black/90 font-bold uppercase tracking-widest">{frame.label}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </section>
   );
 }
