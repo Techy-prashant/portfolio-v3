@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     url: "https://portfolio-v3-ten-gray.vercel.app/",
     images: [
       {
-        url: "/previewscreen.png",
+        url: "/previewscreen.jpg",
         width: 1200,
         height: 630,
         alt: "Prashant Tiwari | Where logic meets Canvas.",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     title: "Prashant Tiwari | Where logic meets Canvas.",
     description:
       "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
-    images: ["/previewscreen.png"],
+    images: ["/previewscreen.jpg"],
   },
 };
 
