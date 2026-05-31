@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   description: "Full-Stack Developer, Multimedia Strategist & Data Science student at IIT Madras.",
   keywords: ["Prashant Tiwari", "IIT Madras", "Full-Stack Developer", "Multimedia", "Data Science"],
   authors: [{ name: "Prashant Tiwari" }],
+  icons: {
+    icon: "/website_logo.svg",
+  },
   openGraph: {
     title: "Prashant Tiwari | Where Logic Meets Canvas",
     description: "Tech-Developer & Multimedia Strategist at IIT Madras",
