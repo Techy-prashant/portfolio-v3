@@ -36,17 +36,37 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Prashant Tiwari | Where Logic Meets Canvas",
-  description: "Full-Stack Developer, Multimedia Strategist & Data Science student at IIT Madras.",
-  keywords: ["Prashant Tiwari", "IIT Madras", "Full-Stack Developer", "Multimedia", "Data Science"],
-  authors: [{ name: "Prashant Tiwari" }],
+  metadataBase: new URL("https://portfolio-v3-ten-gray.vercel.app/"),
+  title: "Prashant Tiwari | Where logic meets creativity",
+  description:
+    "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
   icons: {
     icon: "/website_logo.svg",
   },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Prashant Tiwari | Where Logic Meets Canvas",
-    description: "Tech-Developer & Multimedia Strategist at IIT Madras",
+    title: "Prashant Tiwari | Where logic meets creativity",
+    description:
+      "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
     type: "website",
+    url: "https://portfolio-v3-ten-gray.vercel.app/",
+    images: [
+      {
+        url: "/previewscreen.png",
+        width: 1200,
+        height: 630,
+        alt: "Prashant Tiwari | Where logic meets creativity",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Prashant Tiwari | Where logic meets creativity",
+    description:
+      "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
+    images: ["/previewscreen.png"],
   },
 };
 
