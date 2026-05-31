@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-v3-ten-gray.vercel.app/"),
   title: "Prashant Tiwari | Where logic meets Canvas.",
   description:
-    "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
+    "Data Science student at IIT Madras building full-stack systems and creative digital experiences.",
   icons: {
     icon: "/website_logo.svg",
   },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Prashant Tiwari | Where logic meets Canvas.",
     description:
-      "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
+      "Data Science student at IIT Madras building full-stack systems and creative digital experiences.",
     type: "website",
     url: "https://portfolio-v3-ten-gray.vercel.app/",
     images: [
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Prashant Tiwari | Where logic meets Canvas.",
     description:
-      "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
+      "Data Science student at IIT Madras building full-stack systems and creative digital experiences.",
     images: ["/previewscreen.jpg"],
   },
 };
