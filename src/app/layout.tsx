@@ -37,7 +37,7 @@ const caveat = Caveat({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-v3-ten-gray.vercel.app/"),
-  title: "Prashant Tiwari | Where logic meets creativity",
+  title: "Prashant Tiwari | Where logic meets Canvas.",
   description:
     "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
   icons: {
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Prashant Tiwari | Where logic meets creativity",
+    title: "Prashant Tiwari | Where logic meets Canvas.",
     description:
       "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
     type: "website",
@@ -57,13 +57,13 @@ export const metadata: Metadata = {
         url: "/previewscreen.png",
         width: 1200,
         height: 630,
-        alt: "Prashant Tiwari | Where logic meets creativity",
+        alt: "Prashant Tiwari | Where logic meets Canvas.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Prashant Tiwari | Where logic meets creativity",
+    title: "Prashant Tiwari | Where logic meets Canvas.",
     description:
       "I'm a Data Science student at IIT Madras who architects scalable full-stack systems by day and directs high-impact multimedia campaigns by night. I bridge the gap between engineering precision and creative vision.",
     images: ["/previewscreen.png"],
