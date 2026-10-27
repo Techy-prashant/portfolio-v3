@@ -1,274 +1,351 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-import { ArrowDown, ArrowUpRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import Image from "next/image";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Terminal,
+  Cpu,
+  Clapperboard,
+  Compass,
+} from "lucide-react";
+import dynamic from "next/dynamic";
 import { heroContent, personalInfo } from "@/data/content";
 
-const slides = [
-  { src: "/myself-data.png", label: "Data Scientist" },
-  { src: "/myself-digital.png", label: "Digital Expert" },
-  { src: "/myself-web.png", label: "Web Developer" },
+const CircadianClock = dynamic(() => import("@/components/ui/CircadianClock"), {
+  ssr: false,
+});
+
+const personas = [
+  {
+    id: "data",
+    role: "Data Scientist",
+    tagline: "Algorithms & Machine Learning",
+    image:
+      "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/portfolioproject-images/data%20science.png",
+    icon: Cpu,
+    stat: "IIT Madras DS",
+  },
+  {
+    id: "web",
+    role: "Full-Stack Engineer",
+    tagline: "High-Performance Systems",
+    image:
+      "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/portfolioproject-images/full%20stack.png",
+    icon: Terminal,
+    stat: "ProjectOS Contributor",
+  },
+  {
+    id: "digital",
+    role: "Multimedia Lead",
+    tagline: "Visual Storytelling at Scale",
+    image:
+      "https://raw.githubusercontent.com/Techy-prashant/images_workIITM/refs/heads/main/portfolioproject-images/creative%20design.png",
+    icon: Clapperboard,
+    stat: "1M+ Net Reach",
+  },
 ];
 
-const roles = personalInfo.roles.slice(0, 3);
-const metrics = ["1M+ Reach", "150K+ Views", "3 Domains"];
+const highlights = [
+  { value: "1M+", label: "Audience Reach", detail: "Campaigns Directed" },
+  { value: "150K+", label: "Video Views", detail: "Fest Media" },
+  { value: "IIT Madras", label: "B.S. Data Science", detail: "Class of '28" },
+  { value: "Rank 72", label: "National Coding", detail: "HackerRank Global" },
+];
 
 export default function Hero() {
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const [activePersona, setActivePersona] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLElement>(null);
 
+  // Subtle desktop pointer responsiveness
   useEffect(() => {
-    slides.forEach(({ src }) => {
-      const image = new Image();
-      image.src = src;
-    });
+    const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+    if (isCoarse) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX / innerWidth - 0.5) * 20;
+      const y = (e.clientY / innerHeight - 0.5) * 20;
+      setMousePos({ x, y });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Auto-advance slider
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDirection(1);
-      setCurrent(p => (p + 1) % slides.length);
-    }, 3500);
-    return () => clearInterval(interval);
-  }, []);
-
-  const go = (dir: 1 | -1) => {
-    setDirection(dir);
-    setCurrent(p => (p + dir + slides.length) % slides.length);
-  };
-
-  const scrollToSection = (id: string) => {
+  const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const current = personas[activePersona];
+  const Icon = current.icon;
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen overflow-hidden bg-transparent"
+      ref={containerRef}
+      className="relative min-h-[95vh] lg:min-h-screen flex flex-col justify-center pt-20 pb-16 lg:py-0 px-6 sm:px-10 lg:pl-28 lg:pr-12"
     >
+      {/* Dynamic Ambient Spotlights that dynamically adapt to circadian theme */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        className="pointer-events-none absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full bg-theme-accent/12 blur-[140px] -z-10 transition-transform duration-700 ease-out hidden sm:block"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.35) 1px, transparent 1px)",
-          backgroundSize: "50px 50px",
-          maskImage: "radial-gradient(circle at 50% 40%, black 30%, transparent 75%)",
+          transform: `translate3d(${mousePos.x * 1.5}px, ${mousePos.y * 1.5}px, 0)`,
         }}
       />
-      <div className="absolute -top-20 -left-16 h-72 w-72 rounded-full bg-[#0047AB]/20 blur-3xl pointer-events-none" />
-      <div className="absolute top-1/3 -right-20 h-80 w-80 rounded-full bg-black/10 blur-3xl pointer-events-none" />
+      <div
+        className="pointer-events-none absolute top-1/2 -right-40 w-[550px] h-[550px] rounded-full bg-theme-accent/8 blur-[150px] -z-10 transition-transform duration-700 ease-out hidden sm:block"
+        style={{
+          transform: `translate3d(${-mousePos.x * 1.2}px, ${-mousePos.y * 1.2}px, 0)`,
+        }}
+      />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 pt-24 pb-14 sm:pb-16">
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-8 items-center min-h-[calc(100vh-96px)]">
-          <motion.div
-            className="order-1 lg:order-1"
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+      <div className="w-full max-w-7xl mx-auto flex flex-col">
+        {/* Top Header Row with Interactive Orbital Local Clock */}
+        <div className="w-full flex justify-end items-center mb-6 lg:mb-8 pt-2">
+          <CircadianClock className="lg:fixed lg:top-7 lg:right-10 lg:z-[90]" />
+        </div>
+
+        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-16 items-center">
+          {/* ========================================================= */}
+          {/* LEFT COLUMN: EDITORIAL TYPOGRAPHY & INTRO                 */}
+          {/* ========================================================= */}
+          <div className="flex flex-col items-start z-10">
+            {/* Eyebrow Label with Technical Badge */}
             <motion.div
-              className="inline-flex items-center gap-2.5 rounded-full border border-[#0047AB]/30 bg-white/80 px-4 py-2 mb-6 backdrop-blur-sm"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex items-center gap-2.5 mb-6"
             >
-              <Sparkles size={14} className="text-[#0047AB]" />
-              <span className="text-[11px] font-mono tracking-[0.18em] uppercase text-[#0047AB] font-semibold">
-                {heroContent.greeting} {personalInfo.name}
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-pill border border-theme shadow-apple-sm text-xs font-mono font-bold text-theme-accent tracking-wide">
+                <span className="w-2 h-2 rounded-full bg-theme-accent animate-pulse" />
+                PRASHANT TIWARI
+              </span>
+              <span className="text-xs font-mono text-theme-muted hidden sm:inline-block">
+                · IIT MADRAS DATA SCIENCE
               </span>
             </motion.div>
 
-            <div className="mb-5 space-y-2">
-              {heroContent.headline.split("\n").map((line, index) => (
-                <motion.h1
-                  key={line}
-                  className="text-[2.35rem] sm:text-5xl md:text-6xl xl:text-[4.3rem] leading-[0.94] tracking-tight text-[#111111] font-black"
-                  style={{ fontFamily: "var(--font-syne)" }}
-                  initial={{ opacity: 0, x: -28 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.65, delay: 0.15 + index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            {/* Redesigned Hero Headline: Soria Bold attention-seeker + Calligraphy Italic with minimal line gap */}
+            <div className="mb-6 select-none overflow-visible">
+              <motion.h1
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                className="tracking-tight"
+              >
+                {/* First Line: Soria Display Serif - for "Where logic" */}
+                <span
+                  className="block font-soria font-medium tracking-tight text-theme-primary text-4xl sm:text-6xl md:text-7xl xl:text-[5.5rem] leading-[0.82]"
+                  style={{ fontFamily: "'Soria', serif", fontWeight: 900 }}
                 >
-                  {line}
-                </motion.h1>
-              ))}
+                  Where logic
+                </span>
+
+                {/* Second Line: Playfair Display Serif - Italic for "meets canvas." */}
+                <span
+                  className="block font-playfair italic font-medium text-theme-primary text-5xl sm:text-7xl md:text-8xl xl:text-[6.4rem] leading-[0.85] -mt-3 sm:-mt-5 md:-mt-7 lg:-mt-8"
+                  style={{
+                    fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
+                    fontStyle: "italic",
+                    fontWeight: 1200,
+                  }}
+                >
+                  meets <span className="text-theme-accent">canvas.</span>
+                </span>
+              </motion.h1>
             </div>
 
+            {/* Story Subheadline & Core Description */}
             <motion.p
-              className="text-base sm:text-lg text-stone-700 max-w-xl leading-relaxed mb-3"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.35 }}
+              transition={{ duration: 0.55, delay: 0.3 }}
+              className="text-lg sm:text-xl text-theme-secondary font-medium max-w-xl leading-snug mb-3"
             >
               {heroContent.subheadline}
             </motion.p>
+
             <motion.p
-              className="text-sm sm:text-base text-stone-600 max-w-2xl leading-relaxed mb-8"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0 }}
+              transition={{ duration: 0.55, delay: 0.38 }}
+              className="text-sm sm:text-base text-theme-muted max-w-xl leading-relaxed mb-8 font-normal"
             >
-              {heroContent.description}
+              Data Science student at IIT Madras bridging engineering precision with high-impact creative media direction. Building full-stack architectures, OS initiatives, and campaigns reaching millions.
             </motion.p>
 
+            {/* Primary Action Buttons */}
             <motion.div
-              className="flex flex-wrap gap-2.5 mb-8"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0 }}
+              transition={{ duration: 0.55, delay: 0.45 }}
+              className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10 w-full sm:w-auto"
             >
-              {roles.map((role) => (
-                <span
-                  key={role}
-                  className="text-[11px] sm:text-xs font-mono uppercase tracking-[0.14em] rounded-full border border-black/20 bg-white/80 text-stone-700 px-3.5 py-1.5"
-                >
-                  {role}
-                </span>
-              ))}
-            </motion.div>
-
-            <motion.div
-              className="flex flex-wrap items-center gap-3 sm:gap-4"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.6 }}
-            >
+              {/* Download Resume (Primary Tactile Button) */}
               <a
                 href={personalInfo.resumeUrl}
                 download
-                className="group inline-flex items-center gap-2 rounded-full bg-[#111111] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-black"
+                className="group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl bg-theme-primary text-theme-invert font-semibold text-sm shadow-apple-md hover:bg-theme-accent hover:text-white transition-all duration-300 hover:-translate-y-0.5"
               >
-                Download Resume
-                <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <span>Download Resume</span>
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
               </a>
-              <a
-                href="#projects"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection("projects");
-                }}
-                className="inline-flex items-center gap-2 rounded-full border border-[#0047AB]/40 bg-white/75 px-6 py-3 text-sm font-semibold text-[#0047AB] transition-all duration-300 hover:border-[#0047AB] hover:bg-white"
+
+              {/* Explore Projects (Frosted Glass Outline) */}
+              <button
+                onClick={() => scrollTo("projects")}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl glass-surface hover:border-theme-accent text-theme-primary font-semibold text-sm border border-theme shadow-apple-sm transition-all duration-300 hover:-translate-y-0.5"
               >
-                See Projects
-              </a>
+                <Compass size={16} className="text-theme-accent" />
+                <span>Explore Projects</span>
+              </button>
             </motion.div>
 
+            {/* Key Metrics / Editorial Highlights */}
             <motion.div
-              className="mt-9 flex flex-wrap gap-3"
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.68 }}
+              transition={{ duration: 0.55, delay: 0.55 }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-xl"
             >
-              {metrics.map((item) => (
-                <span
-                  key={item}
-                  className="rounded-xl border border-black/10 bg-white/70 px-3 py-2 text-xs sm:text-sm font-semibold text-stone-700"
+              {highlights.map((h, i) => (
+                <div
+                  key={i}
+                  className="p-3.5 rounded-2xl glass-surface border border-theme shadow-apple-sm flex flex-col"
                 >
-                  {item}
-                </span>
+                  <span className="font-sans font-extrabold text-base sm:text-lg text-theme-primary tracking-tight leading-tight">
+                    {h.value}
+                  </span>
+                  <span className="text-[11px] font-bold text-theme-muted mt-0.5">
+                    {h.label}
+                  </span>
+                </div>
               ))}
             </motion.div>
+          </div>
 
-            <motion.button
-              onClick={() => scrollToSection("about")}
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 py-2 text-xs font-mono uppercase tracking-[0.14em] text-stone-700 hover:bg-white transition-colors"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.85 }}
-            >
-              Scroll to explore
-              <ArrowDown size={14} />
-            </motion.button>
-          </motion.div>
-
+          {/* ========================================================= */}
+          {/* RIGHT COLUMN: LAYERED EDITORIAL PORTRAIT COMPOSITION      */}
+          {/* ========================================================= */}
           <motion.div
-            className="order-2 lg:order-2 relative flex justify-center lg:justify-end"
-            initial={{ opacity: 0, x: 42 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="relative flex flex-col items-center justify-center"
           >
-            <motion.div
-              className="absolute -top-4 left-2 sm:left-6 rounded-2xl border border-[#0047AB]/30 bg-white/85 px-3 py-2 shadow-lg backdrop-blur-sm z-10"
-              initial={{ opacity: 0, y: -2 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <p className="text-[11px] font-mono uppercase tracking-[0.16em] text-[#0047AB]">Current Mode</p>
-              <p className="text-sm font-semibold text-stone-800">{slides[current].label}</p>
-            </motion.div>
+            {/* Frosted Layered Frame */}
+            <div className="relative w-full max-w-[420px] aspect-[4/5] rounded-[2.5rem] p-3 glass-surface border border-theme shadow-2xl transition-transform duration-500 ease-out hover:border-theme-accent">
+              {/* Top Frame Status Bar */}
+              <div className="flex items-center justify-between px-3 py-2 mb-2 border-b border-theme">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/40" />
+                  <span className="text-[12px] font-mono uppercase tracking-wider text-theme-muted font-bold">
+                    Gallery
+                  </span>
+                </div>
+                <span className="text-[13px] font-mono text-theme-muted">
+                  Roll No. 24F2001089
+                </span>
+              </div>
 
-            <div className="relative w-full max-w-[440px]">
-              <div className="relative overflow-hidden rounded-[2rem] border border-[#0047AB]/25 bg-white/55 p-2 shadow-2xl shadow-black/20 backdrop-blur-sm">
-                <div className="relative overflow-hidden rounded-[1.4rem] aspect-[4/5] bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.75),rgba(238,243,250,0.98))]">
-                  <AnimatePresence mode="sync" custom={direction} initial={false}>
-                    <motion.div
-                      key={current}
-                      custom={direction}
-                      variants={{
-                        enter: (d: number) => ({ x: d > 0 ? "100%" : "-100%", opacity: 0 }),
-                        center: { x: 0, opacity: 1 },
-                        exit: (d: number) => ({ x: d > 0 ? "-100%" : "100%", opacity: 0 }),
-                      }}
-                      initial="enter"
-                      animate="center"
-                      exit="exit"
-                      transition={{ duration: 0.64, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute inset-0 h-full w-full"
-                    >
-                      <img
-                        src={slides[current].src}
-                        alt={slides[current].label}
-                        className="h-full w-full object-cover object-top"
-                        loading="eager"
-                        decoding="async"
-                        width="1000"
-                        height="1500"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/8 via-transparent to-transparent pointer-events-none" />
+              {/* Inner Image Canvas */}
+              <div
+                className="relative w-full h-[calc(100%-72px)] rounded-[1.8rem] overflow-hidden isolate bg-gradient-to-b from-black/80 via-black/50 to-black"
+                style={{
+                  WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+                  maskImage: "radial-gradient(white, black)",
+                  transform: "translateZ(0)",
+                }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={current.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative w-full h-full rounded-[1.8rem] overflow-hidden"
+                    style={{
+                      WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+                      maskImage: "radial-gradient(white, black)",
+                      transform: "translateZ(0)",
+                    }}
+                  >
+                    <Image
+                      src={current.image}
+                      alt={`${personalInfo.name} - ${current.role}`}
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, 420px"
+                      className="object-cover object-top filter contrast-[1.04]"
+                    />
+                    {/* Atmospheric lighting gradient on image bottom */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Floating Lens Info Overlay */}
+                <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between p-3 rounded-2xl glass-surface border border-theme shadow-apple-sm">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-theme-pill text-theme-accent flex items-center justify-center">
+                      <Icon size={16} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-theme-primary leading-tight">
+                        {current.role}
+                      </p>
+                      <p className="text-[10px] font-mono text-theme-muted">
+                        {current.tagline}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-mono font-bold text-theme-accent px-2 py-0.5 rounded-md bg-theme-pill border border-theme">
+                    {current.stat}
+                  </span>
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-center gap-2.5">
-                <button
-                  onClick={() => go(-1)}
-                  className="h-9 w-9 rounded-full border border-[#0047AB]/35 bg-white/75 text-[#111111] flex items-center justify-center transition-all hover:bg-white"
-                  aria-label="Previous slide"
-                >
-                  <ChevronLeft size={16} />
-                </button>
-                <div className="flex items-center gap-1.5">
-                  {slides.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => {
-                        setDirection(i > current ? 1 : -1);
-                        setCurrent(i);
-                      }}
-                      className={`rounded-full border transition-all duration-300 ${
-                        i === current
-                          ? "w-6 h-2 bg-[#0047AB] border-[#0047AB]"
-                          : "w-2 h-2 bg-transparent border-[#0047AB]/45 hover:border-[#0047AB]/70"
-                      }`}
-                      aria-label={`Go to slide ${i + 1}`}
-                    />
-                  ))}
-                </div>
-                <button
-                  onClick={() => go(1)}
-                  className="h-9 w-9 rounded-full border border-[#0047AB]/35 bg-white/75 text-[#111111] flex items-center justify-center transition-all hover:bg-white"
-                  aria-label="Next slide"
-                >
-                  <ChevronRight size={16} />
-                </button>
+              {/* Persona Switcher Tabs */}
+              <div className="grid grid-cols-3 gap-1.5 mt-2.5 px-1">
+                {personas.map((p, idx) => (
+                  <button
+                    key={p.id}
+                    onClick={() => setActivePersona(idx)}
+                    className={`py-1.5 px-2 rounded-xl text-[11px] font-mono font-semibold transition-all duration-200 text-center truncate ${
+                      activePersona === idx
+                        ? "theme-tab-active border font-bold"
+                        : "bg-theme-pill text-theme-muted hover:text-theme-primary"
+                    }`}
+                  >
+                    {p.role.split(" ")[0]}
+                  </button>
+                ))}
               </div>
             </div>
           </motion.div>
         </div>
-
       </div>
+
+      {/* Subtle Scroll Indicator */}
+      <motion.button
+        onClick={() => scrollTo("about")}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.6 }}
+        aria-label="Scroll to about section"
+        className="mt-8 mx-auto hidden lg:inline-flex items-center gap-2 text-xs font-mono text-theme-muted hover:text-theme-primary tracking-widest uppercase transition-colors"
+      >
+        <span>SCROLL TO EXPLORE</span>
+        <ArrowDown size={14} className="animate-bounce text-theme-accent" />
+      </motion.button>
     </section>
   );
 }
