@@ -1,80 +1,155 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { aboutContent, personalInfo } from "@/data/content";
-import { GraduationCap, MapPin, Phone, Mail } from "lucide-react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.7, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] } }),
-};
+import { GraduationCap, Code2, Film, Sparkles, MapPin, CheckCircle2 } from "lucide-react";
+import { personalInfo } from "@/data/content";
 
 export default function About() {
   return (
-    <section id="about" className="py-28 px-6 sm:px-10">
+    <section id="about" className="py-28 px-6 sm:px-10 lg:pl-28 lg:pr-12 relative">
       <div className="max-w-7xl mx-auto">
-        <motion.div className="flex items-center gap-3 mb-16" variants={fadeUp} custom={0} initial="hidden" whileInView="show" viewport={{ once: true }}>
-          <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>About</span>
-          <span className="flex-1 h-px bg-stone-900/20" />
-          <span className="text-sm font-mono font-bold text-stone-700 tracking-widest uppercase">01</span>
-        </motion.div>
+        {/* Section Header with Progressive Divider */}
+        <div className="flex items-center gap-4 mb-16">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-electric">
+            01 / BACKGROUND
+          </span>
+          <div className="flex-1 section-divider" />
+        </div>
 
-        <div className="grid lg:grid-cols-2 gap-10 items-start">
-          <div>
-            <motion.h2 className="text-4xl sm:text-5xl font-bold text-stone-900 mb-8 leading-tight" variants={fadeUp} custom={1} initial="hidden" whileInView="show" viewport={{ once: true }} style={{ fontFamily: "'Syne', sans-serif" }}>
-              Turning complex systems into elegant solutions.
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* ========================================================= */}
+          {/* LEFT COLUMN: EDITORIAL NARRATIVE & MANIFESTO              */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-7 flex flex-col">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold text-theme-primary tracking-tight leading-[1.1] mb-8"
+            >
+              Turning algorithmic precision into human resonance.
             </motion.h2>
-            {aboutContent.paragraphs.map((para, i) => (
-              <motion.p key={i} className="text-stone-700 leading-relaxed mb-5 text-[15px]" variants={fadeUp} custom={i + 2} initial="hidden" whileInView="show" viewport={{ once: true }}>
-                {para}
-              </motion.p>
-            ))}
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="space-y-5 text-theme-secondary text-base sm:text-lg leading-relaxed font-normal"
+            >
+              <p>
+                I'm a 2nd-year B.S. student in Data Science and Applications at the{" "}
+                <span className="text-theme-primary font-semibold">Indian Institute of Technology Madras</span>.
+                My coursework and research center on machine learning, algorithmic efficiency, and scalable systems, which I continuously translate into production software.
+              </p>
+              <p>
+                Beyond code, I direct cross-functional creative teams, spearhead content strategy reaching millions of viewers, and co-founded an agency from the ground up. Whether architecting an operating system interface or directing a festival campaign, I treat design and engineering as two facets of the same discipline.
+              </p>
+            </motion.div>
+
+            {/* Editorial Quote / Signature Accent with Unique Editorial Font & No Long Dashes */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mt-10 p-7 sm:p-8 rounded-3xl glass-surface border border-theme relative overflow-hidden shadow-apple-dark"
+            >
+              <p
+                className="font-libre italic font-medium text-xl sm:text-2xl md:text-[1.65rem] text-theme-primary leading-relaxed tracking-normal"
+                style={{
+                  fontFamily: "var(--font-libre), 'Libre Baskerville', Georgia, serif",
+                  fontStyle: "italic",
+                  fontWeight: 500,
+                }}
+              >
+                “Great systems and great stories are engineered the exact same way, with relentless attention to craft.”
+              </p>
+              <div className="mt-4 flex items-center justify-between text-xs font-mono text-theme-muted">
+                <span className="font-bold tracking-wider text-theme-primary">Prashant Tiwari</span>
+                <span className="flex items-center gap-1.5 text-theme-accent font-semibold">
+                  <MapPin size={13} /> Chennai, India
+                </span>
+              </div>
+            </motion.div>
           </div>
 
-          <motion.div className="space-y-4" variants={fadeUp} custom={3} initial="hidden" whileInView="show" viewport={{ once: true }}>
-            <div className="glass-card rounded-2xl p-6 shadow-lg shadow-black/15">
-              <div className="flex items-start gap-4">
-                <div className="mt-0.5 w-10 h-10 rounded-xl bg-stone-900/5 border border-stone-900/10 flex items-center justify-center flex-shrink-0">
-                  <GraduationCap size={18} className="text-stone-700" />
+          {/* ========================================================= */}
+          {/* RIGHT COLUMN: INSTITUTIONAL CREDENTIAL & DUAL PILLARS     */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-5 flex flex-col gap-6">
+            {/* IIT Madras Degree Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="glass-surface rounded-3xl p-7 flex flex-col justify-between"
+            >
+              <div className="flex items-start gap-4 mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-theme-pill border border-theme text-theme-primary flex items-center justify-center flex-shrink-0 shadow-md">
+                  <GraduationCap size={22} className="text-theme-accent" />
                 </div>
                 <div>
-                  <p className="text-xs font-mono font-bold text-stone-700 uppercase tracking-widest mb-1">Education</p>
-                  <p className="text-stone-900 font-semibold">Indian Institute of Technology Madras</p>
-                  <p className="text-sm text-stone-700 mt-1">B.S. in Data Science & Applications</p>
-                  <p className="text-xs font-mono text-stone-700 font-bold mt-1.5">2nd Year · 2024 – 2028</p>
+                  <span className="text-[10px] font-mono uppercase font-bold tracking-widest text-theme-accent">
+                    Academic Degree
+                  </span>
+                  <h3 className="text-base sm:text-lg font-bold text-theme-primary leading-snug mt-0.5">
+                    IIT Madras
+                  </h3>
+                  <p className="text-xs text-theme-muted">
+                    Indian Institute of Technology Madras
+                  </p>
                 </div>
               </div>
-            </div>
 
-            <div className="glass-card rounded-2xl p-6 shadow-lg shadow-black/15">
-              <p className="text-xs font-mono font-bold text-stone-700 uppercase tracking-widest mb-4">Contact</p>
-              <div className="space-y-3">
-                {[
-                  { icon: Mail, label: personalInfo.email, href: `mailto:${personalInfo.email}` },
-                  { icon: Phone, label: personalInfo.phone, href: `tel:${personalInfo.phone}` },
-                  { icon: MapPin, label: personalInfo.location, href: "#" },
-                ].map(({ icon: Icon, label, href }) => (
-                  <a key={label} href={href} className="flex items-center gap-3 text-stone-700 hover:text-black transition-colors group">
-                    <Icon size={14} className="text-stone-600 group-hover:text-black flex-shrink-0" />
-                    <span className="text-sm">{label}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { value: "1M+", label: "Users Reached" },
-                { value: "150K+", label: "Campaign Views" },
-                { value: "#72", label: "HackerRank Global" },
-              ].map((stat) => (
-                <div key={stat.label} className="glass-card rounded-xl p-4 text-center shadow-lg shadow-black/15">
-                  <div className="text-xl font-black text-stone-900 mb-1" style={{ fontFamily: "'Syne', sans-serif" }}>{stat.value}</div>
-                  <div className="text-xs text-stone-700 leading-tight">{stat.label}</div>
+              <div className="space-y-1.5 pt-4 border-t border-theme">
+                <div className="flex items-center justify-between text-xs font-semibold text-theme-primary">
+                  <span>B.S. in Data Science & Applications</span>
+                  <span className="font-mono text-theme-accent">2024 - 2028</span>
                 </div>
-              ))}
-            </div>
-          </motion.div>
+                <p className="text-xs text-theme-muted">
+                  Focus: Machine Learning, Statistical Inference, System Architectures.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* The Dual Pillars: Logic & Canvas */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="grid sm:grid-cols-2 lg:grid-cols-1 gap-4"
+            >
+              {/* Pillar 1: The Logic */}
+              <div className="glass-surface rounded-3xl p-6">
+                <div className="flex items-center gap-3 mb-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-blue-500/15 text-theme-accent flex items-center justify-center">
+                    <Code2 size={16} />
+                  </div>
+                  <h4 className="text-sm font-bold text-theme-primary">The Logic</h4>
+                </div>
+                <p className="text-xs text-theme-muted leading-relaxed">
+                  Full-stack engineering, algorithms, C/C++ systems design, data pipelines, and responsive web platforms.
+                </p>
+              </div>
+
+              {/* Pillar 2: The Canvas */}
+              <div className="glass-surface rounded-3xl p-6">
+                <div className="flex items-center gap-3 mb-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-theme-pill border border-theme text-theme-primary flex items-center justify-center">
+                    <Film size={16} className="text-theme-accent" />
+                  </div>
+                  <h4 className="text-sm font-bold text-theme-primary">The Canvas</h4>
+                </div>
+                <p className="text-xs text-theme-muted leading-relaxed">
+                  Creative direction, cinematic video editing, brand campaigns with 1M+ reach, and visual storytelling.
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
