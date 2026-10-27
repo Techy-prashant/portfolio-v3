@@ -1,0 +1,231 @@
+{
+  "promptName": "Copilot Prompt: Recreate Portfolio-v3 With a New UI/UX",
+  "role": "GitHub Copilot acting as a senior front-end/full-stack engineer",
+  "goal": "Recreate the existing Portfolio-v3 project structure and technical stack as closely as possible, but give the site a noticeably different UI/UX direction and make only minor backend changes where needed.",
+  "principles": [
+    "Preserve the original product scope, code organization, and dependency set.",
+    "Deliver a distinctly different visual identity and interaction model.",
+    "Keep the architecture simple, data-driven, and production-ready."
+  ],
+  "hardRequirements": [
+    "Keep the same overall tech stack.",
+    "Keep the same core folder structure under src/.",
+    "Keep the same major dependencies and install equivalents.",
+    "Preserve the same app-router-based Next.js architecture.",
+    "Keep the same main content sections.",
+    "Preserve the same API route surface, but minor backend changes are allowed.",
+    "Use TypeScript everywhere.",
+    "Use Tailwind CSS for styling.",
+    "Use Framer Motion for animation.",
+    "Keep the chatbot concept, but it should remain lightweight and local."
+  ],
+  "targetStack": [
+    "Next.js 14.2.0",
+    "React 18",
+    "React DOM 18",
+    "TypeScript 5",
+    "Tailwind CSS 3.4",
+    "PostCSS",
+    "Autoprefixer",
+    "Framer Motion",
+    "lucide-react",
+    "resend",
+    "googleapis",
+    "uuid",
+    "Playwright",
+    "@playwright/test"
+  ],
+  "requiredAppStructure": [
+    "src/app/globals.css",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/api/contact/route.ts",
+    "src/app/api/notify/route.ts",
+    "src/app/api/notify/verify/[token]/route.ts",
+    "src/components/layout/Navbar.tsx",
+    "src/components/sections/About.tsx",
+    "src/components/sections/Contact.tsx",
+    "src/components/sections/Experience.tsx",
+    "src/components/sections/Hero.tsx",
+    "src/components/sections/Projects.tsx",
+    "src/components/sections/Skills.tsx",
+    "src/components/ui/ChatbotWidget.tsx",
+    "src/components/ui/CustomCursor.tsx",
+    "src/components/ui/LoadingScreen.tsx",
+    "src/components/ui/NotifyModal.tsx",
+    "src/components/ui/ProgressBar.tsx",
+    "src/components/ui/ProjectCard.tsx",
+    "src/data/content.ts",
+    "src/lib/"
+  ],
+  "contentModel": [
+    "personalInfo",
+    "heroContent",
+    "aboutContent",
+    "skillsData",
+    "experienceData",
+    "projectsData",
+    "achievementsData",
+    "socialLinks"
+  ],
+  "preserveFeatures": [
+    "Hero section with strong headline treatment and motion.",
+    "About section with narrative copy.",
+    "Experience section with timeline or stacked cards.",
+    "Skills section with grouped proficiency indicators.",
+    "Projects section with rich project cards.",
+    "Contact section with a working form.",
+    "Newsletter/notify flow with email verification.",
+    "Globally mounted chatbot widget.",
+    "Custom cursor and loading screen if they still improve the UX."
+  ],
+  "uiUxDirection": {
+    "style": "Create a distinctly different design language instead of recreating the original visual style.",
+    "areasToChange": [
+      "Typography pairing",
+      "Color palette",
+      "Surface treatment",
+      "Section spacing",
+      "Card styles",
+      "Motion timing",
+      "Navigation behavior",
+      "Background layering",
+      "Mobile layout strategy"
+    ],
+    "suggestedDirection": [
+      "Use a more editorial or gallery-like composition.",
+      "Introduce stronger visual hierarchy in the hero.",
+      "Use asymmetric section layouts where useful.",
+      "Use purposeful gradients, texture, or layered backgrounds.",
+      "Make animations smoother but less noisy than the original.",
+      "Ensure the mobile experience is first-class."
+    ]
+  },
+  "backendExpectations": {
+    "routes": [
+      {
+        "route": "POST /api/contact",
+        "behavior": [
+          "Accept contact form submissions.",
+          "Validate required fields.",
+          "Return useful error responses.",
+          "Keep email notification behavior."
+        ]
+      },
+      {
+        "route": "POST /api/notify",
+        "behavior": [
+          "Handle newsletter signup.",
+          "Keep email verification behavior.",
+          "Store or forward signup data in the same general way."
+        ]
+      },
+      {
+        "route": "GET /api/notify/verify/[token]",
+        "behavior": [
+          "Verify the email/token flow.",
+          "Keep the flow robust and user-friendly."
+        ]
+      }
+    ],
+    "allowedChanges": [
+      "Improve validation.",
+      "Improve error handling.",
+      "Improve response shape consistency.",
+      "Improve logging clarity.",
+      "Improve token handling safety.",
+      "Refactor utility code in src/lib/ if needed."
+    ],
+    "constraint": "Do not introduce unnecessary backend complexity."
+  },
+  "componentNotes": {
+    "Navbar": [
+      "Preserve anchor navigation to the main sections.",
+      "Use a compact and elegant mobile interaction pattern."
+    ],
+    "Hero": [
+      "Make this the strongest visual moment on the page.",
+      "Use layered typography, motion, and clear CTAs.",
+      "Keep it content-driven from content.ts."
+    ],
+    "About": [
+      "Present the narrative in a refined way, not a plain text block."
+    ],
+    "Experience": [
+      "Show roles, companies, durations, and descriptions clearly.",
+      "Use motion and spacing to support readability."
+    ],
+    "Skills": [
+      "Render grouped skill categories with a visible sense of progression.",
+      "Keep the content shape familiar even if the visual style changes."
+    ],
+    "Projects": [
+      "Present projects as visually rich cards.",
+      "Keep external links and project metadata.",
+      "Reuse ProjectCard.tsx if it still fits the new design."
+    ],
+    "Contact": [
+      "Keep the contact form functional.",
+      "Use validation and user feedback that feel modern and clean."
+    ],
+    "ChatbotWidget": [
+      "Keep the chatbot local and lightweight.",
+      "Read from src/data/content.ts instead of relying on a remote AI API.",
+      "Keep responses short, point-based, and useful.",
+      "Support English, Hindi, and Hinglish if the original content model expects that."
+    ],
+    "LoadingScreen": [
+      "If kept, make it brief and tasteful.",
+      "It should not block the site longer than necessary."
+    ],
+    "CustomCursor": [
+      "Keep only if it genuinely improves the new UX.",
+      "It should never hurt mobile usability."
+    ],
+    "ProgressBar": [
+      "Keep if it supports the page narrative.",
+      "The implementation should be subtle and performant."
+    ]
+  },
+  "stylingRules": [
+    "Use Tailwind CSS utility classes as the primary styling method.",
+    "Keep src/app/globals.css for global variables, resets, and foundational theming.",
+    "Avoid visual clutter.",
+    "Ensure contrast and readability.",
+    "Maintain good spacing and responsive breakpoints.",
+    "Prefer reusable design tokens over one-off style hacks."
+  ],
+  "motionRules": [
+    "Use Framer Motion for page transitions, section reveals, and card entrances.",
+    "Motion should support the content, not distract from it.",
+    "Use staggered sequences sparingly.",
+    "Keep animations performant on mid-range devices."
+  ],
+  "seoMetadata": [
+    "Preserve or improve metadata in layout.tsx.",
+    "Keep canonical, Open Graph, and Twitter card support.",
+    "Ensure the preview image and title are meaningful."
+  ],
+  "qualityBar": [
+    "Match the original architecture closely.",
+    "Keep code readable and easy to extend.",
+    "Prefer small focused components.",
+    "Preserve data-driven rendering.",
+    "Avoid unnecessary abstraction.",
+    "Do not add dependencies unless they are already in the project stack."
+  ],
+  "outputExpectations": [
+    "Uses the same stack and dependency family.",
+    "Preserves the same route and component structure.",
+    "Has a noticeably different visual design.",
+    "Keeps the backend behavior compatible with the original flows.",
+    "Feels production-ready."
+  ],
+  "optionalImplementationNotes": [
+    "If overlapping UI roles exist, consolidate only where it improves maintainability.",
+    "Keep the chatbot and notification flows simple and predictable.",
+    "If a component is not essential to the new UX, simplify it instead of removing the feature.",
+    "If backend utilities are refactored, keep the public route contracts stable."
+  ],
+  "closingInstruction": "Now recreate the project accordingly."
+}
