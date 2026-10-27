@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           from: "Portfolio Contact <onboarding@resend.dev>",
           to: [toEmail],
-          subject: `New message from ${name} — Portfolio`,
+          subject: `New message from ${name} | Portfolio`,
           html: `
             <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto;">
               <h2 style="color:#1c1917;">New Portfolio Contact</h2>
