@@ -1,8 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, ChevronDown, MessageSquareText, Send, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Bot, ChevronDown, MessageSquareText, Send, X, ExternalLink, RefreshCw, CheckCircle2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { achievementsData, experienceData, personalInfo, projectsData, skillsData } from "@/data/content";
 
 type Language = "en" | "hinglish";
@@ -11,227 +11,303 @@ type Message = {
   id: number;
   role: "bot" | "user";
   text: string;
+  links?: Array<{ label: string; url: string }>;
 };
 
-type KnowledgeResponse = Record<Language, string[]>;
+type KnowledgeEntry = {
+  id: string;
+  intents: string[];
+  en: {
+    reply: string;
+    links?: Array<{ label: string; url: string }>;
+  };
+  hinglish: {
+    reply: string;
+    links?: Array<{ label: string; url: string }>;
+  };
+};
 
-const languages: Array<{ id: Language; label: string; hint: string }> = [
-  { id: "en", label: "English", hint: "Simple English" },
-  { id: "hinglish", label: "Hinglish", hint: "Hindi + English mix" },
+const knowledgeData: KnowledgeEntry[] = [
+  {
+    id: "identity",
+    intents: [
+      "who are you", "who is prashant", "tell me about prashant", "about", "bio", "intro", "introduction",
+      "prashant kaun hai", "profile", "background", "summary"
+    ],
+    en: {
+      reply: "Prashant Tiwari is a 2nd-year B.S. Data Science & Applications student at IIT Madras. He is a full-stack engineer and multimedia strategist who bridges technical architecture with high-impact creative storytelling. He also co-founded Adniko and directs digital media initiatives for audiences reaching millions.",
+      links: [
+        { label: "View Resume", url: personalInfo.resumeUrl },
+        { label: "LinkedIn", url: personalInfo.linkedin },
+      ],
+    },
+    hinglish: {
+      reply: "Prashant Tiwari IIT Madras me 2nd-year B.S. in Data Science ke student hain. Woh ek full-stack developer aur multimedia strategist hain jo technical systems develop karte hain aur creative digital campaigns lead karte hain. Unhone Adniko startup co-found kiya aur 1M+ users tak digital reach create ki hai.",
+      links: [
+        { label: "Resume Dekho", url: personalInfo.resumeUrl },
+        { label: "LinkedIn", url: personalInfo.linkedin },
+      ],
+    },
+  },
+  {
+    id: "education",
+    intents: [
+      "education", "college", "university", "iit", "iitm", "iit madras", "degree", "study", "studies", "academics",
+      "padhai", "degree kya hai", "kaha padhte ho"
+    ],
+    en: {
+      reply: "Prashant is pursuing his B.S. Degree in Data Science & Applications from the Indian Institute of Technology Madras (IIT Madras), currently in his 2nd year (2024 to 2028). His coursework covers machine learning, algorithm design, distributed software systems, and data structures.",
+      links: [{ label: "IIT Madras Program", url: "https://study.iitm.ac.in/ds" }],
+    },
+    hinglish: {
+      reply: "Prashant IIT Madras se Data Science & Applications me B.S. degree pursue kar rahe hain (2nd Year, 2024 to 2028). Unka academic focus machine learning, algorithms aur scalable software systems par hai.",
+      links: [{ label: "IIT Madras Program", url: "https://study.iitm.ac.in/ds" }],
+    },
+  },
+  {
+    id: "skills",
+    intents: [
+      "skills", "tech stack", "tools", "programming", "languages", "what tech", "frameworks", "technologies",
+      "frontend", "backend", "full stack", "kya aata hai", "languages kya hai"
+    ],
+    en: {
+      reply: "Here is Prashant's technical and creative toolkit:\n• Core Languages: Python, JavaScript, TypeScript, C, C++\n• Web & Systems: React.js, Next.js, Node.js, Express, MongoDB, Tailwind CSS\n• Multimedia & 3D: DaVinci Resolve, Premiere Pro, After Effects, Figma, Blender, Unreal Engine.",
+      links: [{ label: "Explore Projects", url: "#projects" }],
+    },
+    hinglish: {
+      reply: "Prashant ka technical aur creative toolkit:\n• Languages: Python, JavaScript, TypeScript, C, C++\n• Web Tech: React.js, Next.js, Node.js, Express, MongoDB, Tailwind CSS\n• Multimedia & 3D: DaVinci Resolve, Premiere Pro, After Effects, Figma, Blender, Unreal Engine.",
+      links: [{ label: "Projects Dekhein", url: "#projects" }],
+    },
+  },
+  {
+    id: "projects",
+    intents: [
+      "projects", "work", "portfolio", "built", "apps", "websites", "what has he made", "namdapha", "tesseract", "projectos",
+      "kya banaya", "projects dikhao"
+    ],
+    en: {
+      reply: "Key flagship projects engineered by Prashant:\n1. Namdapha House Website: Full-stack MERN portal serving a 5,000+ student campus community.\n2. Tesseract Club Website: Interactive student portal with modern UI and events system.\n3. ProjectOS Initiative: Selected contributor building India's first PC-based OS (C/C++, Linux, UI/UX).\n4. Multimedia Campaigns: Produced high-engagement video assets (Shiv-Ratri, Paradox Fest Promo, Namdapha launch).",
+      links: [
+        { label: "Namdapha Website", url: "https://namdapha.iitmbs.org" },
+        { label: "Tesseract Site", url: "https://tesseractfun.netlify.app" },
+      ],
+    },
+    hinglish: {
+      reply: "Prashant ke major projects:\n1. Namdapha House Website: Full-stack MERN web app jo 5,000+ students ke liye scale karta hai.\n2. Tesseract Club Website: Highly interactive club website built with React & Netlify.\n3. ProjectOS Initiative: India ke first PC-based OS me selected contributor (C/C++, Linux).\n4. Video Campaigns: Shiv-Ratri, Paradox Saavan promo aur Namdapha launch video campaigns.",
+      links: [
+        { label: "Namdapha Website", url: "https://namdapha.iitmbs.org" },
+        { label: "Tesseract Site", url: "https://tesseractfun.netlify.app" },
+      ],
+    },
+  },
+  {
+    id: "experience",
+    intents: [
+      "experience", "work history", "roles", "leadership", "jobs", "internship", "paradox", "adniko", "namdapha head",
+      "kaha kaam kiya", "experience batao"
+    ],
+    en: {
+      reply: "Prashant's leadership & work experience:\n• Coordinator | Multimedia & Content Strategy at Paradox, IIT Madras (Jun 2025 to Present): Directed digital campaigns generating 150K+ views.\n• Multimedia Head at Namdapha House, IIT Madras (Jun 2024 to Present): Managed content strategy with 1M+ user reach.\n• Co-Founder at Adniko (Jun 2023 to Sep 2025): Led client acquisition, brand strategy, and team building from day one.",
+    },
+    hinglish: {
+      reply: "Prashant ka leadership aur work experience:\n• Paradox, IIT Madras: Multimedia & Content Coordinator (150K+ views campaign).\n• Namdapha House, IIT Madras: Multimedia Head (1M+ reach achieve ki).\n• Adniko: Co-Founder (Business development, client strategy aur team leadership).",
+    },
+  },
+  {
+    id: "achievements",
+    intents: [
+      "achievements", "awards", "rank", "hackerrank", "milestones", "honors", "accomplishments", "trophy",
+      "kya jeeta", "achievements kya hai"
+    ],
+    en: {
+      reply: "Notable milestones & honors:\n• Ranked #72 Globally in a National Level Coding Contest on HackerRank.\n• Selected contributor for the ProjectOS PC operating system initiative.\n• Fest Coordinator for Paradox (IIT Madras BS Fest).\n• Multimedia Head for Namdapha House.\n• Head Editor at Stemonef | HumanON.\n• Co-Founder of Adniko.",
+    },
+    hinglish: {
+      reply: "Prashant ke major milestones:\n• HackerRank National Coding Contest me Global Rank #72 achieve kiya.\n• ProjectOS initiative me selected contributor.\n• Paradox IIT Madras fest coordinator.\n• Namdapha House me Multimedia Head.\n• Adniko startup ke Co-Founder.",
+    },
+  },
+  {
+    id: "photography",
+    intents: [
+      "photography", "photos", "camera", "creative frames", "pictures", "vivo", "matepad", "huawei", "hobby",
+      "photo kisse li", "photography karte ho"
+    ],
+    en: {
+      reply: "Photography is one of Prashant's favorite passions. He shoots visual storytelling frames using a VIVO T1 5G and Huawei MatePad Pro. Featured locations include Bhole Ghat, Garud Govind Temple, RadhaRaman Mandir, and historical street perspectives in Mathura & Vrindavan.",
+      links: [{ label: "View Creative Frames", url: "#projects" }],
+    },
+    hinglish: {
+      reply: "Photography Prashant ka favorite hobby hai. Woh VIVO T1 5G aur Huawei MatePad Pro se visual frames capture karte hain. Unke collection me Bhole Ghat, Garud Govind Temple aur RadhaRaman Mandir ki aesthetic frames included hain.",
+      links: [{ label: "Frames Dekho", url: "#projects" }],
+    },
+  },
+  {
+    id: "contact",
+    intents: [
+      "contact", "email", "phone", "hire", "freelance", "opportunity", "connect", "reach out", "message", "linkedin", "github",
+      "contact kaise kare", "email id", "phone number", "baat karni hai"
+    ],
+    en: {
+      reply: "You can connect directly with Prashant through any of these channels:\n• Email: pt286355@gmail.com\n• Phone: +91 9548966498\n• Location: IIT Madras, Chennai\n• GitHub: github.com/Techy-prashant\n• LinkedIn: linkedin.com/in/prashant-tiwari-6b440a313",
+      links: [
+        { label: "Send Email", url: `mailto:${personalInfo.email}` },
+        { label: "GitHub Profile", url: personalInfo.github },
+        { label: "LinkedIn Profile", url: personalInfo.linkedin },
+      ],
+    },
+    hinglish: {
+      reply: "Aap Prashant se in channels ke through direct connect kar sakte hain:\n• Email: pt286355@gmail.com\n• Phone: +91 9548966498\n• Location: IIT Madras, Chennai\n• GitHub: @Techy-prashant\n• LinkedIn: /prashant-tiwari-6b440a313",
+      links: [
+        { label: "Email Bhejo", url: `mailto:${personalInfo.email}` },
+        { label: "LinkedIn Connect", url: personalInfo.linkedin },
+      ],
+    },
+  },
+  {
+    id: "resume",
+    intents: [
+      "resume", "cv", "download resume", "pdf", "biodata", "resume link",
+      "resume chahiye", "cv dikhao"
+    ],
+    en: {
+      reply: "You can view and download Prashant Tiwari's complete engineering and multimedia resume directly using the link below.",
+      links: [{ label: "Download Resume (PDF)", url: personalInfo.resumeUrl }],
+    },
+    hinglish: {
+      reply: "Aap Prashant ka full resume directly download kar sakte hain niche diye link se.",
+      links: [{ label: "Resume Download Karein (PDF)", url: personalInfo.resumeUrl }],
+    },
+  },
 ];
 
 const quickPrompts = [
-  { en: "Tell me about Prashant", hinglish: "Prashant ke baare mein batao" },
-  { en: "What are the main skills?", hinglish: "Main skills kya hain?" },
-  { en: "Show me the projects", hinglish: "Projects dikhaiye" },
+  { en: "Who is Prashant?", hinglish: "Prashant kaun hai?" },
+  { en: "What are his key skills?", hinglish: "Main skills kya hain?" },
+  { en: "Tell me about his projects", hinglish: "Projects ke baare me batao" },
+  { en: "What is his IIT Madras degree?", hinglish: "IIT Madras me kya padhte hain?" },
   { en: "How can I contact him?", hinglish: "Contact kaise karein?" },
+  { en: "Show me his achievements", hinglish: "Achievements kya hain?" },
 ];
 
-const translations = {
-  title: { en: "Chota Jarvis", hinglish: "Chota Jarvis" },
-  greeting: {
-    en: "Hi, I am Chota Jarvis. Ask me anything about this portfolio.",
-    hinglish: "Hi, main Chota Jarvis hoon. Main is portfolio ke questions ka jawab de sakta hoon.",
-  },
-  helper: {
-    en: "Try one of the quick questions below or type your own.",
-    hinglish: "Neeche quick questions try karo ya apna sawaal type karo.",
-  },
-  inputPlaceholder: {
-    en: "Ask about skills, projects, experience, contact...",
-    hinglish: "Skills, projects, experience, contact ke baare mein pucho...",
-  },
-  send: { en: "Send", hinglish: "Bhejo" },
-  fallback: {
-    en: [
-      "I can help with these topics:",
-      "- About Prashant",
-      "- Skills and tools",
-      "- Projects and work",
-      "- Experience and achievements",
-      "- Contact and resume",
-    ],
-    hinglish: [
-      "Main in topics par help kar sakta hoon:",
-      "- Prashant ke baare mein",
-      "- Skills aur tools",
-      "- Projects aur work",
-      "- Experience aur achievements",
-      "- Contact aur resume",
-    ],
-  },
-} satisfies Record<string, Record<Language, string | string[]>>;
-
-const knowledgeBase: Array<{ keywords: string[]; response: KnowledgeResponse }> = [
-  {
-    keywords: ["website", "portfolio", "sections", "home", "page", "what is here"],
-    response: {
-      en: [
-        "This portfolio website has: Hero, About, Experience, Skills, Projects, and Contact sections.",
-      ],
-      hinglish: [
-        "Is portfolio website me Hero, About, Experience, Skills, Projects aur Contact sections hain.",
-      ],
-    },
-  },
-  {
-    keywords: ["about", "who are you", "your intro", "tell me about", "prashant", "bio", "introduction", "kaun", "baare"],
-    response: {
-      en: [
-        `${personalInfo.name} is a ${personalInfo.roles.slice(0, 3).join(", ")}.`,
-        "He studies B.S. in Data Science & Applications at IIT Madras.",
-        "He mixes engineering work with multimedia strategy, so the profile shows both technical and creative sides.",
-      ],
-      hinglish: [
-        `${personalInfo.name} ek ${personalInfo.roles.slice(0, 3).join(", ")} hain.`,
-        "Woh IIT Madras me B.S. in Data Science & Applications padh rahe hain.",
-        "Unka profile technical aur creative dono side ko show karta hai.",
-      ],
-    },
-  },
-  {
-    keywords: ["skill", "skills", "tools", "tech stack", "technology", "what can he do"],
-    response: {
-      en: [
-        `Main skills are: ${skillsData[0].skills.map((skill) => skill.name).join(", ")}.`,
-        `Web stack: ${skillsData[1].skills.map((skill) => skill.name).join(", ")}.`,
-        `Creative tools: ${skillsData[2].skills.map((skill) => skill.name).join(", ")}.`,
-      ],
-      hinglish: [
-        `Main skills hain: ${skillsData[0].skills.map((skill) => skill.name).join(", ")}.`,
-        `Web stack: ${skillsData[1].skills.map((skill) => skill.name).join(", ")}.`,
-        `Creative tools: ${skillsData[2].skills.map((skill) => skill.name).join(", ")}.`,
-      ],
-    },
-  },
-  {
-    keywords: ["project", "work", "build", "portfolio", "showcase"],
-    response: {
-      en: projectsData.map((project) => `${project.title} - ${project.description}`),
-      hinglish: projectsData.map((project) => `${project.title} - ${project.description}`),
-    },
-  },
-  {
-    keywords: ["experience", "job", "role", "intern", "leadership", "work history"],
-    response: {
-      en: experienceData.flatMap((item) => [`${item.role} at ${item.company} (${item.duration})`, ...item.description]),
-      hinglish: experienceData.flatMap((item) => [`${item.role} at ${item.company} (${item.duration})`, ...item.description]),
-    },
-  },
-  {
-    keywords: ["contact", "email", "phone", "reach", "linkedin", "github", "connect"],
-    response: {
-      en: [
-        `Email: ${personalInfo.email}`,
-        `Phone: ${personalInfo.phone}`,
-        `Location: ${personalInfo.location}`,
-        `GitHub: ${personalInfo.github}`,
-        `LinkedIn: ${personalInfo.linkedin}`,
-      ],
-      hinglish: [
-        `Email: ${personalInfo.email}`,
-        `Phone: ${personalInfo.phone}`,
-        `Location: ${personalInfo.location}`,
-        `GitHub: ${personalInfo.github}`,
-        `LinkedIn: ${personalInfo.linkedin}`,
-      ],
-    },
-  },
-  {
-    keywords: ["achievement", "rank", "award", "honor", "honour"],
-    response: {
-      en: achievementsData.map((item) => item),
-      hinglish: achievementsData.map((item) => item),
-    },
-  },
-  {
-    keywords: ["education", "study", "college", "iit", "madras", "degree"],
-    response: {
-      en: ["Indian Institute of Technology Madras.", "B.S. in Data Science & Applications.", "2nd Year, 2024 - 2028."],
-      hinglish: ["Indian Institute of Technology Madras.", "B.S. in Data Science & Applications.", "2nd Year, 2024 - 2028."],
-    },
-  },
-  {
-    keywords: ["resume", "cv", "download"],
-    response: {
-      en: [`Resume: ${personalInfo.resumeUrl}`],
-      hinglish: [`Resume: ${personalInfo.resumeUrl}`],
-    },
-  },
-];
-
-function normalize(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9\u0900-\u097f\s]/g, " ").replace(/\s+/g, " ").trim();
-}
-
-function formatReply(lines: string[], language: Language) {
-  const filtered = lines.filter(Boolean);
-  if (!filtered.length) return translations.fallback[language].join("\n");
-  return filtered.map((line) => `• ${line}`).join("\n");
-}
-
-function createReply(question: string, language: Language) {
-  const normalized = normalize(question);
-  if (!normalized) return translations.fallback[language].join("\n");
-
-  if (/^(hello|hey|hola|hi jarvis|hello jarvis|chota jarvis)/.test(normalized)) {
-    return translations.greeting[language];
+function smartMatch(query: string, lang: Language) {
+  const clean = query.toLowerCase().replace(/[^a-z0-9\s]/g, " ").trim();
+  if (!clean) {
+    return {
+      reply: lang === "en"
+        ? "I can answer questions regarding Prashant's education at IIT Madras, tech skills, full-stack projects, multimedia work, and contact details."
+        : "Main Prashant ke IIT Madras studies, skills, projects, multimedia work aur contact ke baare me bata sakta hoon.",
+    };
   }
 
-  const match = knowledgeBase.find((entry) => entry.keywords.some((keyword) => normalized.includes(keyword)));
-  if (match) {
-    return formatReply(match.response[language], language);
+  // Greetings
+  if (/^(hi|hello|hey|namaste|hola|good morning|good evening|wassup|yo)/.test(clean)) {
+    return {
+      reply: lang === "en"
+        ? "Hello! I am Chota Jarvis, Prashant's AI portfolio assistant. Ask me anything about his technical projects, IIT Madras studies, multimedia work, or how to collaborate."
+        : "Namaste! Main Chota Jarvis hoon, Prashant ka AI portfolio assistant. Aap mujhse unke projects, IIT Madras studies, skills ya contact ke baare me puch sakte hain.",
+    };
   }
 
-  return translations.fallback[language].join("\n");
-}
+  // Score each entry
+  const words = clean.split(/\s+/).filter(w => w.length > 2);
+  let bestEntry: KnowledgeEntry | null = null;
+  let bestScore = 0;
 
-function localizeQuickPrompt(prompt: { en: string; hinglish: string }, language: Language) {
-  return prompt[language];
+  for (const entry of knowledgeData) {
+    let score = 0;
+    for (const intent of entry.intents) {
+      if (clean.includes(intent)) {
+        score += 8;
+      }
+      for (const w of words) {
+        if (intent.includes(w)) {
+          score += 2;
+        }
+      }
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestEntry = entry;
+    }
+  }
+
+  if (bestEntry && bestScore >= 4) {
+    return bestEntry[lang];
+  }
+
+  return {
+    reply: lang === "en"
+      ? "I don't have verified records on that specific topic yet. However, I can help you with:\n• Prashant's Background & IIT Madras Data Science Degree\n• Technical Stack & Languages (Python, Next.js, C++)\n• Projects (Namdapha, Tesseract, ProjectOS)\n• Work Experience & Leadership Roles\n• Contact Details & Resume Download."
+      : "Mere paas is specific sawaal ka record nahi hai. Lekin main in topics par guide kar sakta hoon:\n• Prashant ka Background aur IIT Madras studies\n• Technical Skills (Python, React/Next.js, C++)\n• Projects (Namdapha, Tesseract, ProjectOS)\n• Leadership experience aur startup Adniko\n• Contact details aur Resume download.",
+  };
 }
 
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [language, setLanguage] = useState<Language>("en");
   const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const [messages, setMessages] = useState<Message[]>(() => [
-    { id: 1, role: "bot", text: translations.greeting.en },
-    { id: 2, role: "bot", text: translations.helper.en },
+
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 1,
+      role: "bot",
+      text: "Hi, I am Chota Jarvis. I have direct access to Prashant's verified portfolio data. How can I help you today?",
+    },
   ]);
 
-  const visibleQuickPrompts = useMemo(() => quickPrompts.map((prompt) => localizeQuickPrompt(prompt, language)), [language]);
-
   useEffect(() => {
-    if (!open) return;
-    window.requestAnimationFrame(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-    });
-  }, [messages, open]);
+    if (open) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, open, isTyping]);
 
-  const pushMessage = (role: Message["role"], text: string) => {
-    setMessages((current) => [...current, { id: Date.now() + current.length, role, text }]);
+  const handleSend = (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed || isTyping) return;
+
+    const userMsgId = Date.now();
+    setMessages((prev) => [...prev, { id: userMsgId, role: "user", text: trimmed }]);
+    setInput("");
+    setIsTyping(true);
+
+    // Realistic typing delay
+    setTimeout(() => {
+      const result = smartMatch(trimmed, language);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          role: "bot",
+          text: result.reply,
+          links: result.links,
+        },
+      ]);
+      setIsTyping(false);
+    }, 450);
   };
 
-  const sendQuestion = (question: string) => {
-    const trimmed = question.trim();
-    if (!trimmed) return;
-
-    const selectedLanguage = language;
-    pushMessage("user", trimmed);
-    setInput("");
-
-    window.setTimeout(() => {
-      pushMessage("bot", createReply(trimmed, selectedLanguage));
-    }, 120);
+  const clearChat = () => {
+    setMessages([
+      {
+        id: Date.now(),
+        role: "bot",
+        text: language === "en"
+          ? "Chat cleared! Ask me anything about Prashant's projects, skills, or background."
+          : "Chat clear ho gaya! Aap Prashant ke projects, skills ya background ke baare me puch sakte hain.",
+      },
+    ]);
   };
 
   return (
     <>
+      {/* Backdrop overlay for mobile */}
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[540] bg-black/10 backdrop-blur-[1px] lg:hidden"
+            className="fixed inset-0 z-[540] bg-black/25 backdrop-blur-xs lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -240,119 +316,189 @@ export default function ChatbotWidget() {
         )}
       </AnimatePresence>
 
-        <motion.button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          className="pointer-events-auto fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[551] inline-flex items-center gap-3 rounded-full border border-black/10 bg-[#111111] px-5 py-3.5 text-white shadow-[0_20px_55px_rgba(17,17,17,0.28)] transition-transform hover:-translate-y-0.5"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          aria-expanded={open}
-          aria-label={open ? "Close Chota Jarvis" : "Open Chota Jarvis"}
-        >
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/10">
-            <MessageSquareText size={19} />
+      {/* Floating Widget Trigger Button */}
+      <motion.button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="pointer-events-auto fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-[115] inline-flex items-center gap-3.5 rounded-full bg-theme-card/90 backdrop-blur-xl border border-theme text-theme-primary px-6 py-3.5 shadow-apple-lg hover:border-theme-accent transition-all duration-300 group hover:-translate-y-0.5"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        aria-label={open ? "Close Chota Jarvis" : "Open Chota Jarvis"}
+      >
+        <span className="relative flex h-3 w-3">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
+        </span>
+        <div className="text-left">
+          <span className="block text-sm sm:text-[15px] font-bold leading-tight tracking-wide font-sans">
+            Chota Jarvis
           </span>
-          <span className="text-left">
-            <span className="block text-sm font-semibold leading-tight">Chota Jarvis</span>
-            <span className="block text-[11px] text-white/65 leading-tight">Ask anything about the portfolio</span>
+          <span className="block text-[11px] text-theme-muted font-mono leading-tight mt-0.5">
+            AI Assistant
           </span>
-          <ChevronDown size={16} className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
-        </motion.button>
+        </div>
+        <ChevronDown size={16} className={`transition-transform duration-300 text-theme-muted ${open ? "rotate-180" : ""}`} />
+      </motion.button>
 
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              className="pointer-events-auto fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-[550] w-[calc(100vw-2rem)] max-w-[340px] max-h-[calc(100vh-8rem)] overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-xl"
-              initial={{ opacity: 0, y: 12, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: 0.97 }}
-              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="flex items-center justify-between border-b border-stone-200 px-4 py-3 bg-stone-900 text-white">
-                <div className="flex items-center gap-2">
-                  <Bot size={16} />
-                  <span className="text-sm font-semibold">{translations.title[language]}</span>
+      {/* Modern Conversational Window */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="pointer-events-auto fixed bottom-20 right-4 sm:bottom-24 sm:right-7 z-[114] w-[calc(100vw-2rem)] max-w-[400px] max-h-[82vh] h-[580px] flex flex-col rounded-3xl border border-theme glass-surface backdrop-blur-2xl shadow-2xl shadow-black/40 overflow-hidden text-theme-primary"
+            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 bg-theme-card text-theme-primary border-b border-theme">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-2xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center text-blue-400 shadow-xs">
+                  <Bot size={18} />
                 </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <h3 className="text-sm font-bold tracking-tight">Chota Jarvis</h3>
+                    <CheckCircle2 size={13} className="text-emerald-400" />
+                  </div>
+                  <p className="text-[10px] font-mono text-theme-muted uppercase tracking-wider">
+                    Portfolio Intelligence
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={clearChat}
+                  className="p-1.5 rounded-lg text-theme-muted hover:text-theme-primary hover:bg-theme-pill transition-colors"
+                  title="Clear Conversation"
+                  aria-label="Clear Conversation"
+                >
+                  <RefreshCw size={13} />
+                </button>
                 <button
                   onClick={() => setOpen(false)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white"
-                  aria-label="Close chatbot"
+                  className="p-1.5 rounded-lg text-theme-muted hover:text-theme-primary hover:bg-theme-pill transition-colors"
+                  aria-label="Close Chat"
                 >
-                  <X size={14} />
+                  <X size={16} />
                 </button>
               </div>
+            </div>
 
-              <div className="px-4 py-4 space-y-3">
-                <div className="grid grid-cols-2 gap-2">
-                  {languages.map((option) => {
-                    const active = option.id === language;
-                    return (
-                      <button
-                        key={option.id}
-                        onClick={() => setLanguage(option.id)}
-                        className={`rounded-xl border px-3 py-2 text-left text-xs font-medium transition-colors ${
-                          active ? "border-stone-900 bg-stone-900 text-white" : "border-stone-200 bg-white text-stone-700"
-                        }`}
-                      >
-                        {option.label}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="rounded-2xl border border-stone-200 bg-stone-50 px-3 py-3">
-                  <div className="max-h-[44vh] space-y-2 overflow-y-auto pr-1 text-sm leading-relaxed text-stone-800">
-                    {messages.map((message) => (
-                      <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                        <div
-                          className={`max-w-[88%] rounded-2xl px-3 py-2 whitespace-pre-line ${
-                            message.role === "user" ? "bg-stone-900 text-white" : "bg-white text-stone-800 border border-stone-200"
-                          }`}
-                        >
-                          {message.text}
-                        </div>
-                      </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {visibleQuickPrompts.map((prompt) => (
-                    <button
-                      key={prompt}
-                      onClick={() => sendQuestion(prompt)}
-                      className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs text-stone-700"
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
-
-                <form
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    sendQuestion(input);
-                  }}
-                  className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white p-2"
-                >
-                  <input
-                    value={input}
-                    onChange={(event) => setInput(event.target.value)}
-                    placeholder={translations.inputPlaceholder[language]}
-                    className="min-w-0 flex-1 border-0 bg-transparent px-2 py-2 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none"
-                  />
+            {/* Language Selector Bar */}
+            <div className="flex items-center justify-between px-4 py-2 bg-theme-pill/40 border-b border-theme text-xs">
+              <span className="text-[11px] font-mono text-theme-muted font-medium">Language:</span>
+              <div className="flex gap-1">
+                {(["en", "hinglish"] as Language[]).map((lang) => (
                   <button
-                    type="submit"
-                    className="inline-flex min-w-[4.5rem] items-center justify-center gap-2 rounded-lg bg-stone-900 px-3 py-2 text-sm font-semibold text-white"
+                    key={lang}
+                    onClick={() => setLanguage(lang)}
+                    className={`px-2.5 py-0.5 rounded-lg text-[11px] font-semibold transition-all ${
+                      language === lang
+                        ? "bg-blue-600 text-white shadow-xs"
+                        : "text-theme-muted hover:text-theme-primary bg-transparent"
+                    }`}
                   >
-                    <Send size={14} />
+                    {lang === "en" ? "English" : "Hinglish"}
                   </button>
-                </form>
+                ))}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+
+            {/* Messages Thread */}
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3.5 text-sm">
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}
+                >
+                  <div
+                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 leading-relaxed whitespace-pre-line text-[13px] ${
+                      msg.role === "user"
+                        ? "bg-blue-600 text-white shadow-xs"
+                        : "bg-theme-pill border border-theme text-theme-primary shadow-xs"
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+
+                  {/* Optional Action Links from bot */}
+                  {msg.links && msg.links.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {msg.links.map((link) => (
+                        <a
+                          key={link.label}
+                          href={link.url}
+                          target={link.url.startsWith("http") ? "_blank" : undefined}
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] font-mono font-semibold text-theme-accent bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded-xl hover:bg-blue-600 hover:text-white transition-colors"
+                        >
+                          <span>{link.label}</span>
+                          <ExternalLink size={10} />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Typing animation */}
+              {isTyping && (
+                <div className="flex items-center gap-1.5 bg-theme-pill border border-theme rounded-2xl px-4 py-2.5 w-fit text-theme-muted">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce [animation-delay:0.15s]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce [animation-delay:0.3s]" />
+                </div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Quick Prompt Chips */}
+            <div className="px-3 py-2 bg-theme-pill/30 border-t border-theme overflow-x-auto no-scrollbar flex gap-1.5">
+              {quickPrompts.map((q) => (
+                <button
+                  key={q.en}
+                  onClick={() => handleSend(q[language])}
+                  className="whitespace-nowrap rounded-xl bg-theme-pill border border-theme px-3 py-1 text-[11px] font-medium text-theme-secondary hover:border-theme-accent hover:text-theme-accent transition-colors shadow-xs"
+                >
+                  {q[language]}
+                </button>
+              ))}
+            </div>
+
+            {/* Input Bar */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSend(input);
+              }}
+              className="p-3 bg-theme-card border-t border-theme flex items-center gap-2"
+            >
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={
+                  language === "en"
+                    ? "Ask about skills, projects, IIT Madras, contact..."
+                    : "Skills, projects, IIT Madras ke baare me pucho..."
+                }
+                className="flex-1 bg-theme-pill border border-theme rounded-xl px-3.5 py-2.5 text-xs text-theme-primary placeholder:text-theme-muted focus:outline-none focus:border-theme-accent focus:bg-theme-pill transition-all"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || isTyping}
+                className="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:bg-theme-pill disabled:text-theme-muted text-white flex items-center justify-center transition-colors shadow-xs"
+                aria-label="Send message"
+              >
+                <Send size={14} />
+              </button>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
