@@ -26,3 +26,8 @@ portfolio-*.json
 # OS files
 .DS_Store
 Thumbs.db
+
+# TypeScript & Python build caches
+*.tsbuildinfo
+__pycache__/
+*.pyc
