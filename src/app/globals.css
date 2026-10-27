@@ -2,74 +2,370 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Soria';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/soria-bold.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/78809/Soria-Bold.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Soria';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/soria-bold.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/78809/Soria-Bold.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Soria';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url('/fonts/soria-bold.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/78809/Soria-Bold.woff') format('woff');
+  font-display: swap;
+}
+
 @layer base {
-  :root {
-    --font-syne: 'Syne', sans-serif;
-    --font-mono: 'Space Mono', monospace;
-    --font-ui: 'Manrope', sans-serif;
-    --font-script: 'Caveat', cursive;
-    --accent-cobalt: #0047AB;
-    --bg-base: #ffffff;
-    --ink: #111111;
-    --bg-gradient:
-      radial-gradient(circle at 12% 18%, rgba(0, 71, 171, 0.14), transparent 32%),
-      radial-gradient(circle at 88% 78%, rgba(17, 17, 17, 0.07), transparent 34%),
-      radial-gradient(circle at 50% 50%, rgba(0, 71, 171, 0.04), transparent 48%),
-      linear-gradient(180deg, #fafdff 0%, #f3f7fb 100%);
+  :root,
+  [data-theme="daylight"],
+  .theme-daylight {
+    --font-soria: 'Soria', serif;
+    --font-playfair: var(--font-playfair, 'Playfair Display', Georgia, serif);
+    --font-libre: var(--font-libre, 'Libre Baskerville', Georgia, serif);
+    --font-headline: var(--font-ui);
+    --font-display: var(--font-ui);
+    --font-syne: var(--font-syne, 'Syne', sans-serif);
+    --font-mono: var(--font-mono, 'Space Mono', monospace);
+    --font-ui: var(--font-ui, 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif);
+
+    /* ========================================================= */
+    /* PHASE A: DAYLIGHT THEME TOKENS (06:00 to 15:59)           */
+    /* Fresh porcelain, pale ice-blue, crisp slate, airy daylight*/
+    /* ========================================================= */
+    --theme-bg-base: #F6F8FC;
+    --theme-text-primary: #0F172A;
+    --theme-text-secondary: #334155;
+    --theme-text-muted: #64748B;
+    --theme-text-accent: #2563EB;
+    --theme-text-accent-hover: #1D4ED8;
+
+    --theme-card-bg: rgba(255, 255, 255, 0.82);
+    --theme-card-bg-hover: rgba(255, 255, 255, 0.95);
+    --theme-card-border: rgba(15, 23, 42, 0.08);
+    --theme-card-border-hover: rgba(37, 99, 235, 0.35);
+    --theme-card-shadow:
+      0 12px 32px -8px rgba(15, 23, 42, 0.06),
+      0 2px 6px -1px rgba(15, 23, 42, 0.03),
+      0 0 0 1px rgba(255, 255, 255, 0.85) inset;
+
+    --theme-pill-bg: rgba(15, 23, 42, 0.04);
+    --theme-pill-bg-hover: rgba(15, 23, 42, 0.08);
+    --theme-pill-border: rgba(15, 23, 42, 0.08);
+
+    --theme-input-bg: rgba(248, 250, 252, 0.95);
+    --theme-input-border: rgba(203, 213, 225, 0.85);
+
+    --theme-btn-primary-bg: #0F172A;
+    --theme-btn-primary-text: #FFFFFF;
+    --theme-btn-primary-hover: #2563EB;
+
+    --theme-divider: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(15, 23, 42, 0.08) 20%,
+      rgba(37, 99, 235, 0.5) 50%,
+      rgba(15, 23, 42, 0.08) 80%,
+      transparent 100%
+    );
+
+    --theme-grid-line: rgba(15, 23, 42, 0.035);
+    --theme-noise-opacity: 0.018;
   }
 
-  html { scroll-behavior: smooth; }
+  /* ========================================================= */
+  /* PHASE B: GOLDEN EVENING THEME TOKENS (16:00 to 19:59)     */
+  /* Warm ivory, champagne, muted amber, rich espresso text    */
+  /* ========================================================= */
+  [data-theme="evening"],
+  .theme-evening {
 
-  section { scroll-margin-top: 5.5rem; }
+    --theme-bg-base: #F5F0E7;
+    --theme-text-primary: #302820;
+    --theme-text-secondary: #4E4237;
+    --theme-text-muted: #7E7063;
+    --theme-text-accent: #B88752;
+    --theme-text-accent-hover: #9E6F39;
+
+    --theme-card-bg: rgba(255, 249, 239, 0.72);
+    --theme-card-bg-hover: rgba(255, 252, 246, 0.92);
+    --theme-card-border: rgba(184, 135, 82, 0.18);
+    --theme-card-border-hover: rgba(184, 135, 82, 0.45);
+    --theme-card-shadow:
+      0 12px 32px -8px rgba(78, 62, 45, 0.08),
+      0 2px 6px -1px rgba(78, 62, 45, 0.04),
+      0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+
+    --theme-pill-bg: rgba(184, 135, 82, 0.08);
+    --theme-pill-bg-hover: rgba(184, 135, 82, 0.16);
+    --theme-pill-border: rgba(184, 135, 82, 0.16);
+
+    --theme-input-bg: rgba(255, 252, 246, 0.95);
+    --theme-input-border: rgba(216, 195, 165, 0.75);
+
+    --theme-btn-primary-bg: #302820;
+    --theme-btn-primary-text: #FBF8F3;
+    --theme-btn-primary-hover: #B88752;
+
+    --theme-divider: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(184, 135, 82, 0.12) 20%,
+      rgba(184, 135, 82, 0.55) 50%,
+      rgba(184, 135, 82, 0.12) 80%,
+      transparent 100%
+    );
+
+    --theme-grid-line: rgba(148, 120, 88, 0.045);
+    --theme-noise-opacity: 0.02;
+  }
+
+  /* ========================================================= */
+  /* PHASE C: MIDNIGHT THEME TOKENS (20:00 to 05:59)           */
+  /* Deep obsidian, midnight navy, cool silver, electric blue  */
+  /* ========================================================= */
+  [data-theme="midnight"],
+  .theme-midnight,
+  [data-theme="dark"],
+  .dark {
+
+    --theme-bg-base: #0C0E12;
+    --theme-text-primary: #E7EAF0;
+    --theme-text-secondary: #CBD5E1;
+    --theme-text-muted: #A6AFBE;
+    --theme-text-accent: #6EA8FF;
+    --theme-text-accent-hover: #4A90E2;
+
+    --theme-card-bg: rgba(17, 27, 43, 0.65);
+    --theme-card-bg-hover: rgba(24, 38, 58, 0.82);
+    --theme-card-border: rgba(255, 255, 255, 0.08);
+    --theme-card-border-hover: rgba(110, 168, 255, 0.35);
+    --theme-card-shadow:
+      0 16px 40px -8px rgba(0, 0, 0, 0.6),
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+
+    --theme-pill-bg: rgba(255, 255, 255, 0.05);
+    --theme-pill-bg-hover: rgba(255, 255, 255, 0.1);
+    --theme-pill-border: rgba(255, 255, 255, 0.1);
+
+    --theme-input-bg: rgba(255, 255, 255, 0.04);
+    --theme-input-border: rgba(255, 255, 255, 0.1);
+
+    --theme-btn-primary-bg: #FFFFFF;
+    --theme-btn-primary-text: #0C0E12;
+    --theme-btn-primary-hover: #6EA8FF;
+
+    --theme-divider: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 20%,
+      rgba(110, 168, 255, 0.6) 50%,
+      rgba(255, 255, 255, 0.08) 80%,
+      transparent 100%
+    );
+
+    --theme-grid-line: rgba(255, 255, 255, 0.045);
+    --theme-noise-opacity: 0.028;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--theme-bg-base);
+    color: var(--theme-text-primary);
+  }
+
+  section {
+    scroll-margin-top: 5.5rem;
+  }
 
   body {
     font-family: var(--font-ui);
-    background: var(--bg-gradient);
-    background-attachment: fixed;
-    color: var(--ink);
-    font-weight: 500;
-    cursor: none;
+    background-color: var(--theme-bg-base);
+    color: var(--theme-text-primary);
+    font-weight: 450;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  body::before {
-    content: "";
+  /* Synchronized, continuous 1400ms theme dissolve across all surfaces */
+  html,
+  body,
+  .theme-transition,
+  .glass-surface,
+  .glass-pill,
+  .section-divider {
+    transition:
+      background-color 1400ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 1400ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 1400ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Architectural grid layer: adapts continuously across daylight, evening, and midnight */
+  .ambient-grid {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.08;
+    z-index: 1;
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.65) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.65) 1px, transparent 1px);
-    background-size: 72px 72px;
-    mask-image: radial-gradient(circle at center, black 24%, transparent 84%);
+      linear-gradient(var(--theme-grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--theme-grid-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, black 40%, transparent 95%);
+    transition: background-image 1400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  * { cursor: none !important; }
+  /* Fine film grain / noise overlay */
+  .ambient-noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    opacity: var(--theme-noise-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    transition: opacity 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
   ::selection {
-    background-color: var(--accent-cobalt);
-    color: rgb(255, 255, 255);
+    background-color: var(--theme-text-accent);
+    color: #FFFFFF;
   }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg-base); }
-  ::-webkit-scrollbar-thumb { background: var(--ink); border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: #333; }
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-text-accent);
+  }
 }
 
 @layer utilities {
+  .font-soria { font-family: 'Soria', serif !important; }
+  .font-playfair { font-family: var(--font-playfair), 'Playfair Display', Georgia, serif !important; }
+  .font-libre { font-family: var(--font-libre), 'Libre Baskerville', Georgia, serif !important; }
   .font-mono { font-family: var(--font-mono) !important; }
-  .font-display { font-family: var(--font-syne) !important; }
-  .font-script { font-family: var(--font-script) !important; }
-  /* Section glass card effect */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.6);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.12);
+  .font-syne { font-family: var(--font-syne), 'Syne', sans-serif !important; }
+  .font-sans { font-family: var(--font-ui), -apple-system, BlinkMacSystemFont, sans-serif !important; }
+  .font-headline { font-family: var(--font-ui), sans-serif !important; }
+  .font-display { font-family: var(--font-ui), sans-serif !important; }
+
+  /* Semantic Theme Color Utilities */
+  .text-theme-primary { color: var(--theme-text-primary) !important; }
+  .text-theme-secondary { color: var(--theme-text-secondary) !important; }
+  .text-theme-muted { color: var(--theme-text-muted) !important; }
+  .text-theme-accent { color: var(--theme-text-accent) !important; }
+  .bg-theme-pill { background-color: var(--theme-pill-bg) !important; }
+  .border-theme { border-color: var(--theme-card-border) !important; }
+  .bg-theme-primary { background-color: var(--theme-btn-primary-bg) !important; }
+  .text-theme-invert { color: var(--theme-btn-primary-text) !important; }
+  .bg-theme-card { background-color: var(--theme-card-bg) !important; }
+  .bg-theme-accent { background-color: var(--theme-text-accent) !important; }
+
+  /* Interactive Segmented Pill Tab */
+  .theme-tab-active {
+    background-color: var(--theme-card-bg-hover) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-card-border-hover) !important;
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--theme-card-border);
+  }
+
+  /* Apple Glass Surface - Dynamically adapts across Daylight, Evening, and Midnight */
+  .glass-surface {
+    background: var(--theme-card-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--theme-card-border);
+    box-shadow: var(--theme-card-shadow);
+    color: var(--theme-text-primary);
+  }
+
+  .glass-surface:hover {
+    background: var(--theme-card-bg-hover);
+    border-color: var(--theme-card-border-hover);
+  }
+
+  /* Floating macOS Pill */
+  .glass-pill {
+    background: var(--theme-card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--theme-card-border);
+    box-shadow: var(--theme-card-shadow);
+    color: var(--theme-text-primary);
+  }
+
+  /* Progressive Section Divider Line */
+  .section-divider {
+    height: 1px;
+    background: var(--theme-divider);
+  }
+
+  /* Three-Phase Ambient Sky Cross-fade Layers */
+  .ambient-sky {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+  }
+
+  .ambient-sky-daylight {
+    background:
+      radial-gradient(ellipse 95% 60% at 50% -12%, rgba(191, 219, 254, 0.65), transparent 75%),
+      radial-gradient(circle 800px at 85% 15%, rgba(224, 231, 255, 0.5), transparent 60%),
+      radial-gradient(circle 900px at 15% 65%, rgba(219, 234, 254, 0.35), transparent 65%);
+  }
+
+  .ambient-sky-evening {
+    background:
+      radial-gradient(ellipse 95% 60% at 50% -12%, rgba(245, 216, 177, 0.65), transparent 75%),
+      radial-gradient(circle 800px at 85% 18%, rgba(248, 203, 166, 0.55), transparent 60%),
+      radial-gradient(circle 900px at 15% 65%, rgba(232, 220, 203, 0.45), transparent 65%);
+  }
+
+  .ambient-sky-midnight {
+    background:
+      radial-gradient(ellipse 85% 55% at 50% -12%, rgba(17, 27, 43, 0.75), transparent 75%),
+      radial-gradient(circle 700px at 85% 20%, rgba(30, 58, 95, 0.28), transparent 60%),
+      radial-gradient(circle 800px at 15% 60%, rgba(17, 27, 43, 0.32), transparent 65%);
+  }
+
+  [data-theme="daylight"] .ambient-sky-daylight,
+  :root:not([data-theme]) .ambient-sky-daylight {
+    opacity: 1;
+  }
+
+  [data-theme="evening"] .ambient-sky-evening {
+    opacity: 1;
+  }
+
+  [data-theme="midnight"] .ambient-sky-midnight,
+  [data-theme="dark"] .ambient-sky-midnight {
+    opacity: 1;
   }
 }
