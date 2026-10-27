@@ -1,11 +1,28 @@
 import type { Metadata } from "next";
-import { Syne, Space_Mono, Manrope, Caveat } from "next/font/google";
+import { Playfair_Display, Libre_Baskerville, Syne, Space_Mono, Manrope } from "next/font/google";
 // @ts-ignore - Next.js handles global CSS side-effect imports at build time
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
-import CustomCursor from "@/components/ui/CustomCursor";
-import LoadingScreen from "@/components/ui/LoadingScreen";
+import ReadingProgress from "@/components/ui/ReadingProgress";
 import ChatbotWidget from "@/components/ui/ChatbotWidget";
+import { CircadianThemeProvider } from "@/context/CircadianThemeContext";
+import CuteRunnerLoader from "@/components/intro/CuteRunnerLoader";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const libreBaskerville = Libre_Baskerville({
+  subsets: ["latin"],
+  variable: "--font-libre",
+  display: "swap",
+  style: ["normal", "italic"],
+  weight: ["400", "700"],
+});
 
 const syne = Syne({
   subsets: ["latin"],
@@ -28,16 +45,9 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const caveat = Caveat({
-  subsets: ["latin"],
-  variable: "--font-script",
-  display: "swap",
-  weight: ["500", "700"],
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-v3-ten-gray.vercel.app/"),
-  title: "Prashant Tiwari | Where logic meets Canvas.",
+  title: "Prashant Tiwari | Where Logic Meets Canvas.",
   description:
     "Data Science student at IIT Madras building full-stack systems and creative digital experiences.",
   icons: {
@@ -47,7 +57,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Prashant Tiwari | Where logic meets Canvas.",
+    title: "Prashant Tiwari | Where Logic Meets Canvas.",
     description:
       "Data Science student at IIT Madras building full-stack systems and creative digital experiences.",
     type: "website",
@@ -57,13 +67,13 @@ export const metadata: Metadata = {
         url: "/previewscreen.jpg",
         width: 1200,
         height: 630,
-        alt: "Prashant Tiwari | Where logic meets Canvas.",
+        alt: "Prashant Tiwari | Where Logic Meets Canvas.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Prashant Tiwari | Where logic meets Canvas.",
+    title: "Prashant Tiwari | Where Logic Meets Canvas.",
     description:
       "Data Science student at IIT Madras building full-stack systems and creative digital experiences.",
     images: ["/previewscreen.jpg"],
@@ -72,13 +82,72 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${syne.variable} ${spaceMono.variable} ${manrope.variable} ${caveat.variable} scroll-smooth`}>
-      <body className="antialiased font-sans selection:bg-[#0047AB] selection:text-white cursor-none lg:pl-64">
-        <LoadingScreen />
-        <CustomCursor />
-        <Navbar />
-        {children}
-        <ChatbotWidget />
+    <html
+      lang="en"
+      className={`${playfair.variable} ${libreBaskerville.variable} ${syne.variable} ${spaceMono.variable} ${manrope.variable} scroll-smooth`}
+      suppressHydrationWarning
+    >
+      <head>
+        <link rel="preload" href="/fonts/soria-bold.woff" as="font" type="font/woff" crossOrigin="anonymous" />
+        <link href="https://fonts.cdnfonts.com/css/soria" rel="stylesheet" />
+        <script
+          id="circadian-theme-initializer"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var isLive = localStorage.getItem('prashant_portfolio_is_live') !== 'false';
+                  var savedTime = localStorage.getItem('prashant_portfolio_interactive_time');
+                  var h = new Date().getHours();
+                  if (!isLive && savedTime) {
+                    try {
+                      var parsed = JSON.parse(savedTime);
+                      if (typeof parsed.hours === 'number') h = parsed.hours;
+                    } catch(e) {}
+                  }
+                  var phase = 'midnight';
+                  if (h >= 6 && h < 16) {
+                    phase = 'daylight';
+                  } else if (h >= 16 && h < 20) {
+                    phase = 'evening';
+                  } else {
+                    phase = 'midnight';
+                  }
+                  var root = document.documentElement;
+                  root.setAttribute('data-theme', phase);
+                  root.classList.remove('theme-daylight', 'theme-evening', 'theme-midnight', 'dark', 'light');
+                  root.classList.add('theme-' + phase);
+                  if (phase === 'midnight') {
+                    root.classList.add('dark');
+                    root.style.colorScheme = 'dark';
+                  } else {
+                    root.classList.add('light');
+                    root.style.colorScheme = 'light';
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="antialiased font-sans selection:bg-blue-500/25 selection:text-current relative">
+        <CircadianThemeProvider>
+          {/* Satisfying Theme-Aware Cute Runner Intro Experience */}
+          <CuteRunnerLoader />
+
+          {/* Circadian Three-Phase Ambient Sky Layers */}
+          <div className="ambient-sky ambient-sky-daylight" />
+          <div className="ambient-sky ambient-sky-evening" />
+          <div className="ambient-sky ambient-sky-midnight" />
+          <div className="ambient-grid" />
+          <div className="ambient-noise" />
+
+          {/* Core UI & Navigation */}
+          <ReadingProgress />
+          <Navbar />
+          <main className="relative z-10">{children}</main>
+          <ChatbotWidget />
+        </CircadianThemeProvider>
       </body>
     </html>
   );
