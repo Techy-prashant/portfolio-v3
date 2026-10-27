@@ -2,72 +2,134 @@
 
 import { motion } from "framer-motion";
 import { experienceData, achievementsData } from "@/data/content";
-import { Trophy } from "lucide-react";
-
-const typeColors: Record<string, string> = {
-  Leadership: "text-stone-800 bg-stone-100 border-stone-300",
-  Entrepreneurship: "text-stone-800 bg-stone-100 border-stone-300",
-};
+import { Trophy, Award, Calendar, CheckCircle2, ArrowUpRight } from "lucide-react";
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-28 px-6 sm:px-10">
+    <section id="experience" className="py-28 px-6 sm:px-10 lg:pl-28 lg:pr-12 relative">
       <div className="max-w-7xl mx-auto">
-        <motion.div className="flex items-center gap-3 mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-          <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>Experience</span>
-          <span className="flex-1 h-px bg-stone-900/20" />
-          <span className="text-sm font-mono font-bold text-stone-700 tracking-widest uppercase">02</span>
-        </motion.div>
+        {/* Section Header with Progressive Divider */}
+        <div className="flex items-center gap-4 mb-16">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-electric">
+            02 / TRACK RECORD
+          </span>
+          <div className="flex-1 section-divider" />
+        </div>
 
-        <div className="grid lg:grid-cols-5 gap-16">
-          <div className="lg:col-span-3">
-            <motion.h2 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} style={{ fontFamily: "'Syne', sans-serif" }}>
-              Where I've been.
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* ========================================================= */}
+          {/* LEFT COLUMN: EDITORIAL TIMELINE                           */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-8 flex flex-col">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold text-theme-primary tracking-tight leading-[1.1] mb-12"
+            >
+              Where leadership meets execution.
             </motion.h2>
 
-            <div className="relative">
-              <div className="absolute left-4 top-2 bottom-2 w-px bg-stone-900/15" />
-              <div className="space-y-10">
-                {experienceData.map((exp, i) => (
-                  <motion.div key={i} className="relative pl-12" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.6, delay: i * 0.1 }}>
-                    <div className="absolute left-[13px] top-1.5 w-2.5 h-2.5 rounded-full bg-white border-2 border-stone-700 shadow-sm" />
-                    <div className="glass-card rounded-2xl p-5 shadow-xl shadow-black/20">
-                      <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-                        <div>
-                          <h3 className="text-base font-bold text-stone-900 leading-snug">{exp.role}</h3>
-                          <p className="text-sm text-stone-700 mt-0.5">{exp.company}</p>
+            <div className="relative pl-6 sm:pl-8 border-l border-theme space-y-12">
+              {experienceData.map((exp, idx) => {
+                const isPresent = exp.duration.toLowerCase().includes("present");
+
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="relative group"
+                  >
+                    {/* Timeline Node Dot */}
+                    <div className="absolute -left-[31px] sm:-left-[39px] top-1.5 z-10 flex items-center justify-center">
+                      {isPresent ? (
+                        <div className="relative flex items-center justify-center">
+                          <span className="animate-ping absolute w-4 h-4 rounded-full bg-blue-500 opacity-75" />
+                          <span className="w-3.5 h-3.5 rounded-full bg-blue-500 border-2 border-theme shadow-sm" />
                         </div>
-                        <div className="flex flex-col items-end gap-1.5">
-                          <span className="text-xs font-mono font-bold text-stone-700">{exp.duration}</span>
-                          <span className={`text-xs font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border ${typeColors[exp.type] ?? "text-stone-700 bg-stone-100 border-stone-300"}`}>{exp.type}</span>
+                      ) : (
+                        <span className="w-3.5 h-3.5 rounded-full bg-theme-muted border-2 border-theme group-hover:bg-theme-accent transition-colors" />
+                      )}
+                    </div>
+
+                    {/* Timeline Card */}
+                    <div className="glass-surface rounded-3xl p-6 sm:p-7">
+                      <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                        <div>
+                          <span className="inline-block text-[10px] font-mono font-bold uppercase tracking-wider text-theme-accent px-2.5 py-0.5 rounded-md bg-blue-500/10 mb-2">
+                            {exp.type}
+                          </span>
+                          <h3 className="text-lg sm:text-xl font-bold text-theme-primary leading-snug">
+                            {exp.role}
+                          </h3>
+                          <p className="text-sm font-semibold text-theme-muted mt-0.5">
+                            {exp.company}
+                          </p>
+                        </div>
+
+                        <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-theme-primary px-3 py-1 rounded-full bg-theme-pill border border-theme">
+                          <Calendar size={12} className="text-theme-accent" />
+                          <span>{exp.duration}</span>
                         </div>
                       </div>
-                      <ul className="space-y-2">
-                        {exp.description.map((d, j) => (
-                          <li key={j} className="flex gap-2.5 text-sm text-stone-700 leading-relaxed">
-                            <span className="text-stone-700 mt-1.5 flex-shrink-0 text-xs">▹</span>{d}
+
+                      <ul className="space-y-2 mt-4 pt-4 border-t border-theme text-sm text-theme-secondary leading-relaxed">
+                        {exp.description.map((bullet, bIdx) => (
+                          <li key={bIdx} className="flex items-start gap-2.5">
+                            <span className="text-theme-accent mt-1 flex-shrink-0 text-xs">▹</span>
+                            <span>{bullet}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
                   </motion.div>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </div>
 
-          <div className="lg:col-span-2">
-            <motion.h2 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }} style={{ fontFamily: "'Syne', sans-serif" }}>
-              Milestones.
-            </motion.h2>
-            <div className="space-y-3">
-              {achievementsData.map((ach, i) => (
-                <motion.div key={i} className="glass-card flex gap-3 items-start rounded-xl p-4 shadow-lg shadow-black/15" initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.5, delay: i * 0.08 }}>
-                  <Trophy size={13} className="text-stone-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-stone-700 leading-relaxed">{ach}</p>
-                </motion.div>
-              ))}
-            </div>
+          {/* ========================================================= */}
+          {/* RIGHT COLUMN: VERIFIED HONORS & RECOGNITIONS             */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="glass-surface rounded-3xl p-7"
+            >
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-theme">
+                <div className="w-10 h-10 rounded-2xl bg-theme-pill border border-theme text-theme-primary flex items-center justify-center shadow-md">
+                  <Trophy size={18} className="text-theme-accent" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-theme-primary">Recognitions</h4>
+                  <p className="text-[11px] font-mono text-theme-muted">
+                    Verified Highlights
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3.5">
+                {achievementsData.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-2.5 text-xs text-theme-secondary leading-relaxed"
+                  >
+                    <CheckCircle2
+                      size={15}
+                      className="text-theme-accent flex-shrink-0 mt-0.5"
+                    />
+                    <span className="text-theme-primary font-medium">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
