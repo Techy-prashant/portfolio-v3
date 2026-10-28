@@ -148,10 +148,10 @@ export default function Projects() {
   const [activeVisual, setActiveVisual] = useState<string | null>(null);
 
   return (
-    <section id="projects" className="py-28 px-6 sm:px-10 lg:pl-28 lg:pr-12 relative">
+    <section id="projects" className="py-12 sm:py-16 lg:py-28 px-4 sm:px-8 lg:pl-28 lg:pr-12 relative">
       <div className="max-w-7xl mx-auto">
         {/* Section Header with Progressive Divider */}
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10 lg:mb-16">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-electric">
             04 / SELECTED WORKS
           </span>
@@ -159,14 +159,14 @@ export default function Projects() {
         </div>
 
         {/* Section Title & Filter Tabs */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-14">
           <div>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold text-theme-primary tracking-tight leading-[1.1] mb-4"
+              className="text-2xl sm:text-4xl md:text-5xl font-display font-extrabold text-theme-primary tracking-tight leading-[1.1] mb-2 sm:mb-4"
             >
               Crafted systems & cinematic media.
             </motion.h2>
@@ -175,14 +175,14 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-theme-muted text-base sm:text-lg max-w-xl leading-relaxed"
+              className="text-theme-muted text-xs sm:text-base max-w-xl leading-relaxed"
             >
               Production web applications, systems contributions, and high-reach media campaigns designed with meticulous attention to detail.
             </motion.p>
           </div>
 
           {/* Filter Tabs (All Works removed, starts with Systems & Web) */}
-          <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-theme-pill border border-theme shadow-apple-dark backdrop-blur-md">
+          <div className="flex items-center gap-1 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl bg-theme-pill border border-theme shadow-apple-dark backdrop-blur-md overflow-x-auto no-scrollbar">
             {(
               [
                 { id: "systems", label: "Systems & Web" },
@@ -193,7 +193,7 @@ export default function Projects() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                className={`px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
                   activeTab === tab.id
                     ? "theme-tab-active border font-bold"
                     : "text-theme-muted hover:text-theme-primary hover:bg-theme-pill"
@@ -209,7 +209,7 @@ export default function Projects() {
         {/* SYSTEMS & WEB PROJECTS (ALL EQUAL SIZED CARDS)            */}
         {/* ========================================================= */}
         {activeTab === "systems" && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 mb-10 sm:mb-16">
             {projectsData.map((proj, idx) => (
               <motion.div
                 key={proj.id}
@@ -217,7 +217,7 @@ export default function Projects() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.06 }}
-                className="glass-surface rounded-3xl p-6 sm:p-7 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-300"
+                className="glass-surface rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-300"
               >
                 <div>
                   <div className="relative aspect-[16/10] rounded-2xl overflow-hidden mb-5 bg-stone-900 border border-theme">

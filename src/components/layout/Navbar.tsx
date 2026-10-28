@@ -307,14 +307,14 @@ export default function Navbar() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="fixed top-3 left-3 right-3 h-14 z-[110] lg:hidden flex items-center justify-between px-4 rounded-2xl glass-surface border border-theme shadow-apple-md"
+        className="fixed top-2.5 left-2.5 right-2.5 sm:top-3 sm:left-3 sm:right-3 h-11 sm:h-12 z-[110] lg:hidden flex items-center justify-between px-3 sm:px-4 rounded-xl sm:rounded-2xl glass-surface border border-theme shadow-apple-md"
       >
         <button
           onClick={() => scrollTo("#hero")}
-          className="flex items-center gap-2.5"
+          className="flex items-center gap-2 min-w-0"
           aria-label="Home"
         >
-          <div className="relative w-8 h-8 rounded-xl overflow-hidden ring-1 ring-white/20 shadow-sm bg-gradient-to-br from-blue-600 to-indigo-600 shrink-0">
+          <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl overflow-hidden ring-1 ring-white/20 shadow-xs bg-gradient-to-br from-blue-600 to-indigo-600 shrink-0">
             {personalInfo.avatarUrl ? (
               <Image
                 src={personalInfo.avatarUrl}
@@ -329,26 +329,26 @@ export default function Navbar() {
               </span>
             )}
           </div>
-          <span className="text-sm font-bold text-theme-primary tracking-tight">
+          <span className="text-xs sm:text-sm font-bold text-theme-primary tracking-tight truncate">
             Prashant Tiwari
           </span>
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <a
             href={personalInfo.resumeUrl}
             download
-            className="inline-flex items-center gap-1 text-[11px] font-mono font-semibold text-theme-invert bg-theme-primary px-2.5 py-1.5 rounded-xl shadow-xs"
+            className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-mono font-bold text-theme-invert bg-theme-primary px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl shadow-xs hover:bg-theme-accent transition-colors"
           >
-            <FileText size={12} />
+            <FileText size={11} />
             <span>CV</span>
           </a>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="w-9 h-9 rounded-xl bg-theme-pill border border-theme flex items-center justify-center text-theme-primary"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-theme-pill border border-theme flex items-center justify-center text-theme-primary hover:text-theme-accent transition-colors"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            {mobileOpen ? <X size={15} /> : <Menu size={15} />}
           </button>
         </div>
       </motion.header>
@@ -361,7 +361,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-x-3 top-20 z-[109] lg:hidden rounded-3xl glass-surface border border-theme shadow-2xl p-6 flex flex-col gap-4"
+            className="fixed inset-x-2.5 top-16 sm:top-18 z-[109] lg:hidden rounded-2xl sm:rounded-3xl glass-surface border border-theme shadow-2xl p-4 sm:p-6 flex flex-col gap-3"
           >
             <nav className="flex flex-col gap-1">
               {navItems.map((item) => {

@@ -67,23 +67,23 @@ const skillGroups: SkillGroup[] = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-28 px-6 sm:px-10 lg:pl-28 lg:pr-12 relative">
+    <section id="skills" className="py-12 sm:py-16 lg:py-28 px-4 sm:px-8 lg:pl-28 lg:pr-12 relative">
       <div className="max-w-7xl mx-auto">
         {/* Section Header with Progressive Divider */}
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10 lg:mb-16">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-electric">
             03 / CAPABILITIES
           </span>
           <div className="flex-1 section-divider" />
         </div>
 
-        <div className="mb-14">
+        <div className="mb-6 sm:mb-14">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold text-theme-primary tracking-tight leading-[1.1] mb-4"
+            className="text-2xl sm:text-4xl md:text-5xl font-display font-extrabold text-theme-primary tracking-tight leading-[1.1] mb-2 sm:mb-4"
           >
             The technical & creative toolkit.
           </motion.h2>
@@ -92,55 +92,55 @@ export default function Skills() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-theme-muted text-base sm:text-lg max-w-2xl leading-relaxed"
+            className="text-theme-muted text-xs sm:text-base max-w-2xl leading-relaxed"
           >
             A curated stack built around systems programming, modern web frameworks, data analysis at IIT Madras, and high-impact digital media production.
           </motion.p>
         </div>
 
         {/* 4 Categorical Quadrants */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
           {skillGroups.map((group, idx) => {
             const Icon = group.icon;
 
             return (
               <motion.div
                 key={group.title}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className="glass-surface rounded-3xl p-6 sm:p-7 flex flex-col justify-between"
+                className="glass-surface rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between"
               >
                 <div>
                   {/* Category Header */}
-                  <div className="flex items-center justify-between mb-5 pb-3 border-b border-theme">
-                    <div className="w-10 h-10 rounded-2xl bg-blue-500/15 text-theme-accent flex items-center justify-center">
-                      <Icon size={18} />
+                  <div className="flex items-center justify-between mb-3 pb-2 sm:mb-5 sm:pb-3 border-b border-theme">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-blue-500/15 text-theme-accent flex items-center justify-center">
+                      <Icon size={16} />
                     </div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest font-bold text-theme-muted">
+                    <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest font-bold text-theme-muted">
                       {group.category}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-theme-primary leading-snug mb-2">
+                  <h3 className="text-sm sm:text-base font-bold text-theme-primary leading-snug mb-1 sm:mb-2">
                     {group.title}
                   </h3>
-                  <p className="text-xs text-theme-muted leading-relaxed mb-6">
+                  <p className="text-[11px] sm:text-xs text-theme-muted leading-relaxed mb-3 sm:mb-6">
                     {group.description}
                   </p>
 
                   {/* Skills List without arbitrary percentages */}
-                  <ul className="space-y-2.5">
+                  <ul className="space-y-1.5 sm:space-y-2.5">
                     {group.skills.map((skill) => (
                       <li
                         key={skill.name}
-                        className="flex items-center justify-between text-xs py-2 px-3 rounded-xl bg-theme-pill border border-theme hover:border-theme-accent transition-colors"
+                        className="flex items-center justify-between text-[11px] sm:text-xs py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl bg-theme-pill border border-theme hover:border-theme-accent transition-colors"
                       >
-                        <span className="font-semibold text-theme-primary">
+                        <span className="font-semibold text-theme-primary truncate">
                           {skill.name}
                         </span>
-                        <span className="text-[10px] font-mono text-theme-muted">
+                        <span className="text-[9px] sm:text-[10px] font-mono text-theme-muted shrink-0 ml-1">
                           {skill.tag}
                         </span>
                       </li>

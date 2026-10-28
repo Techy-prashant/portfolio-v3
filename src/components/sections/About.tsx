@@ -6,20 +6,80 @@ import { personalInfo } from "@/data/content";
 
 export default function About() {
   return (
-    <section id="about" className="py-28 px-6 sm:px-10 lg:pl-28 lg:pr-12 relative">
+    <section id="about" className="py-12 sm:py-16 lg:py-28 px-4 sm:px-8 lg:pl-28 lg:pr-12 relative">
       <div className="max-w-7xl mx-auto">
         {/* Section Header with Progressive Divider */}
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10 lg:mb-16">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-electric">
             01 / BACKGROUND
           </span>
           <div className="flex-1 section-divider" />
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* ========================================================= */}
-          {/* LEFT COLUMN: EDITORIAL NARRATIVE & MANIFESTO              */}
-          {/* ========================================================= */}
+        {/* ========================================================= */}
+        {/* MOBILE LAYOUT: CONCISE, DIRECT, 10-15 SECOND OVERVIEW     */}
+        {/* ========================================================= */}
+        <div className="lg:hidden flex flex-col">
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl sm:text-3xl font-display font-extrabold text-theme-primary tracking-tight leading-snug mb-3.5"
+          >
+            Turning algorithmic precision into human resonance.
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="space-y-3 text-xs sm:text-sm text-theme-secondary leading-relaxed font-normal mb-5"
+          >
+            <p>
+              I'm a 2nd-year B.S. student in Data Science & Applications at{" "}
+              <span className="text-theme-primary font-semibold">IIT Madras</span>, focusing on machine learning, scalable software systems, and data pipelines that power production platforms.
+            </p>
+            <p>
+              Alongside systems engineering, I direct multimedia teams, build content campaigns reaching millions of viewers, and co-founded an agency—bridging technical depth with visual storytelling.
+            </p>
+          </motion.div>
+
+          {/* Compact Verified Highlight Pills */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-2"
+          >
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl glass-surface border border-theme">
+              <GraduationCap size={15} className="text-theme-accent shrink-0" />
+              <span className="text-xs font-semibold text-theme-primary truncate">
+                IIT Madras · B.S. Data Science
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl glass-surface border border-theme">
+              <Sparkles size={15} className="text-theme-accent shrink-0" />
+              <span className="text-xs font-semibold text-theme-primary truncate">
+                1M+ Reach · Digital Media Lead
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl glass-surface border border-theme">
+              <Code2 size={15} className="text-theme-accent shrink-0" />
+              <span className="text-xs font-semibold text-theme-primary truncate">
+                Full-Stack & Systems · ML Models
+              </span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ========================================================= */}
+        {/* DESKTOP LAYOUT: 100% UNCHANGED COMPLETE STORY             */}
+        {/* ========================================================= */}
+        <div className="hidden lg:grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* LEFT COLUMN: EDITORIAL NARRATIVE & MANIFESTO */}
           <div className="lg:col-span-7 flex flex-col">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -75,9 +135,7 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* ========================================================= */}
-          {/* RIGHT COLUMN: INSTITUTIONAL CREDENTIAL & DUAL PILLARS     */}
-          {/* ========================================================= */}
+          {/* RIGHT COLUMN: INSTITUTIONAL CREDENTIAL & DUAL PILLARS */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             {/* IIT Madras Degree Card */}
             <motion.div
