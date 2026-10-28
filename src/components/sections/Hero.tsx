@@ -57,8 +57,36 @@ const highlights = [
 
 export default function Hero() {
   const [activePersona, setActivePersona] = useState(0);
+  const [prevPersona, setPrevPersona] = useState<number | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLElement>(null);
+
+  // Preload all 3 persona images in the browser for instant, flicker-free switching
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      personas.forEach((p) => {
+        const img = new window.Image();
+        img.src = p.image;
+      });
+    }
+  }, []);
+
+  // Safe persona selection with two-layer crossfade coordination
+  const handleSelectPersona = (index: number) => {
+    if (index === activePersona) return;
+    setPrevPersona(activePersona);
+    setActivePersona(index);
+  };
+
+  // Clear previous persona after transition completes to reset background layer
+  useEffect(() => {
+    if (prevPersona !== null) {
+      const timer = window.setTimeout(() => {
+        setPrevPersona(null);
+      }, 380);
+      return () => window.clearTimeout(timer);
+    }
+  }, [activePersona, prevPersona]);
 
   // Subtle desktop pointer responsiveness
   useEffect(() => {
@@ -87,7 +115,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-[95vh] lg:min-h-screen flex flex-col justify-center pt-20 pb-16 lg:py-0 px-6 sm:px-10 lg:pl-28 lg:pr-12"
+      className="relative min-h-[auto] lg:min-h-screen flex flex-col justify-center pt-24 pb-8 sm:pt-28 lg:py-0 px-4 sm:px-8 lg:pl-28 lg:pr-12"
     >
       {/* Dynamic Ambient Spotlights that dynamically adapt to circadian theme */}
       <div
@@ -104,22 +132,22 @@ export default function Hero() {
       />
 
       <div className="w-full max-w-7xl mx-auto flex flex-col">
-        {/* Top Header Row with Interactive Orbital Local Clock */}
-        <div className="w-full flex justify-end items-center mb-6 lg:mb-8 pt-2">
+        {/* Top Header Row with Interactive Orbital Local Clock - Visible on Desktop only */}
+        <div className="hidden lg:flex w-full justify-end items-center mb-6 lg:mb-8 pt-2">
           <CircadianClock className="lg:fixed lg:top-7 lg:right-10 lg:z-[90]" />
         </div>
 
-        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-16 items-center">
           {/* ========================================================= */}
           {/* LEFT COLUMN: EDITORIAL TYPOGRAPHY & INTRO                 */}
           {/* ========================================================= */}
-          <div className="flex flex-col items-start z-10">
-            {/* Eyebrow Label with Technical Badge */}
+          <div className="flex flex-col items-start z-10 w-full">
+            {/* Eyebrow Label with Technical Badge (Desktop only) */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex items-center gap-2.5 mb-6"
+              className="hidden lg:flex items-center gap-2.5 mb-6"
             >
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-pill border border-theme shadow-apple-sm text-xs font-mono font-bold text-theme-accent tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-theme-accent animate-pulse" />
@@ -131,7 +159,7 @@ export default function Hero() {
             </motion.div>
 
             {/* Redesigned Hero Headline: Soria Bold attention-seeker + Calligraphy Italic with minimal line gap */}
-            <div className="mb-6 select-none overflow-visible">
+            <div className="mt-2 sm:mt-0 mb-5 sm:mb-6 select-none overflow-visible w-full">
               <motion.h1
                 initial={{ opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -140,7 +168,7 @@ export default function Hero() {
               >
                 {/* First Line: Soria Display Serif - for "Where logic" */}
                 <span
-                  className="block font-soria font-medium tracking-tight text-theme-primary text-4xl sm:text-6xl md:text-7xl xl:text-[5.5rem] leading-[0.82]"
+                  className="block font-soria font-medium tracking-tight text-theme-primary text-[2.95rem] sm:text-6xl md:text-7xl xl:text-[5.5rem] leading-[0.88] lg:leading-[0.82]"
                   style={{ fontFamily: "'Soria', serif", fontWeight: 900 }}
                 >
                   Where logic
@@ -148,7 +176,7 @@ export default function Hero() {
 
                 {/* Second Line: Playfair Display Serif - Italic for "meets canvas." */}
                 <span
-                  className="block font-playfair italic font-medium text-theme-primary text-5xl sm:text-7xl md:text-8xl xl:text-[6.4rem] leading-[0.85] -mt-3 sm:-mt-5 md:-mt-7 lg:-mt-8"
+                  className="block font-playfair italic font-medium text-theme-primary text-[3.45rem] sm:text-7xl md:text-8xl xl:text-[6.4rem] leading-[0.9] lg:leading-[0.85] -mt-2 sm:-mt-5 md:-mt-7 lg:-mt-8"
                   style={{
                     fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
                     fontStyle: "italic",
@@ -160,12 +188,12 @@ export default function Hero() {
               </motion.h1>
             </div>
 
-            {/* Story Subheadline & Core Description */}
+            {/* Story Subheadline & Core Description (Desktop only) */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.3 }}
-              className="text-lg sm:text-xl text-theme-secondary font-medium max-w-xl leading-snug mb-3"
+              className="hidden lg:block text-lg sm:text-xl text-theme-secondary font-medium max-w-xl leading-snug mb-3"
             >
               {heroContent.subheadline}
             </motion.p>
@@ -174,57 +202,57 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.38 }}
-              className="text-sm sm:text-base text-theme-muted max-w-xl leading-relaxed mb-8 font-normal"
+              className="hidden lg:block text-sm sm:text-base text-theme-muted max-w-xl leading-relaxed mb-8 font-normal"
             >
               Data Science student at IIT Madras bridging engineering precision with high-impact creative media direction. Building full-stack architectures, OS initiatives, and campaigns reaching millions.
             </motion.p>
 
-            {/* Primary Action Buttons */}
+            {/* Primary Action Buttons - Side-by-side on mobile and desktop */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.45 }}
-              className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10 w-full sm:w-auto"
+              transition={{ duration: 0.55, delay: 0.3 }}
+              className="grid grid-cols-2 gap-2.5 sm:gap-4 mb-6 lg:mb-10 w-full sm:w-auto max-w-md"
             >
               {/* Download Resume (Primary Tactile Button) */}
               <a
                 href={personalInfo.resumeUrl}
                 download
-                className="group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl bg-theme-primary text-theme-invert font-semibold text-sm shadow-apple-md hover:bg-theme-accent hover:text-white transition-all duration-300 hover:-translate-y-0.5"
+                className="group relative inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 py-3 sm:px-7 sm:py-3.5 rounded-xl sm:rounded-2xl bg-theme-primary text-theme-invert font-semibold text-xs sm:text-sm shadow-apple-md hover:bg-theme-accent hover:text-white transition-all duration-300 hover:-translate-y-0.5 text-center truncate"
               >
-                <span>Download Resume</span>
+                <span className="truncate">Download Resume</span>
                 <ArrowUpRight
-                  size={16}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  size={14}
+                  className="shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 />
               </a>
 
               {/* Explore Projects (Frosted Glass Outline) */}
               <button
                 onClick={() => scrollTo("projects")}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl glass-surface hover:border-theme-accent text-theme-primary font-semibold text-sm border border-theme shadow-apple-sm transition-all duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-3 sm:px-6 sm:py-3.5 rounded-xl sm:rounded-2xl glass-surface hover:border-theme-accent text-theme-primary font-semibold text-xs sm:text-sm border border-theme shadow-apple-sm transition-all duration-300 hover:-translate-y-0.5 text-center truncate"
               >
-                <Compass size={16} className="text-theme-accent" />
-                <span>Explore Projects</span>
+                <Compass size={14} className="shrink-0 text-theme-accent" />
+                <span className="truncate">Explore Projects</span>
               </button>
             </motion.div>
 
-            {/* Key Metrics / Editorial Highlights */}
+            {/* Key Metrics / Editorial Highlights - Compact 2x2 grid on mobile */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.55 }}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-xl"
+              transition={{ duration: 0.55, delay: 0.4 }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 w-full max-w-xl"
             >
               {highlights.map((h, i) => (
                 <div
                   key={i}
-                  className="p-3.5 rounded-2xl glass-surface border border-theme shadow-apple-sm flex flex-col"
+                  className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl glass-surface border border-theme shadow-apple-sm flex flex-col justify-center"
                 >
-                  <span className="font-sans font-extrabold text-base sm:text-lg text-theme-primary tracking-tight leading-tight">
+                  <span className="font-sans font-extrabold text-sm sm:text-lg text-theme-primary tracking-tight leading-tight">
                     {h.value}
                   </span>
-                  <span className="text-[11px] font-bold text-theme-muted mt-0.5">
+                  <span className="text-[10px] sm:text-[11px] font-bold text-theme-muted mt-0.5 truncate">
                     {h.label}
                   </span>
                 </div>
@@ -239,90 +267,124 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex flex-col items-center justify-center"
+            className="relative flex flex-col items-center justify-center w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[420px] mx-auto mt-6 lg:mt-0"
           >
             {/* Frosted Layered Frame */}
-            <div className="relative w-full max-w-[420px] aspect-[4/5] rounded-[2.5rem] p-3 glass-surface border border-theme shadow-2xl transition-transform duration-500 ease-out hover:border-theme-accent">
+            <div className="relative w-full aspect-[4/5] rounded-[2rem] sm:rounded-[2.5rem] p-2.5 sm:p-3 glass-surface border border-theme shadow-2xl transition-transform duration-500 ease-out hover:border-theme-accent">
               {/* Top Frame Status Bar */}
-              <div className="flex items-center justify-between px-3 py-2 mb-2 border-b border-theme">
+              <div className="flex items-center justify-between px-3 py-1.5 sm:py-2 mb-2 border-b border-theme">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/40" />
-                  <span className="text-[12px] font-mono uppercase tracking-wider text-theme-muted font-bold">
+                  <span className="text-[11px] sm:text-[12px] font-mono uppercase tracking-wider text-theme-muted font-bold">
                     Gallery
                   </span>
                 </div>
-                <span className="text-[13px] font-mono text-theme-muted">
+                <span className="text-[11px] sm:text-[13px] font-mono text-theme-muted">
                   Roll No. 24F2001089
                 </span>
               </div>
 
-              {/* Inner Image Canvas */}
+              {/* Inner Image Canvas - Persistent Layered Cross-fading (Zero Jitter/Flicker) */}
               <div
-                className="relative w-full h-[calc(100%-72px)] rounded-[1.8rem] overflow-hidden isolate bg-gradient-to-b from-black/80 via-black/50 to-black"
+                className="relative w-full h-[calc(100%-68px)] sm:h-[calc(100%-72px)] rounded-[1.5rem] sm:rounded-[1.8rem] overflow-hidden isolate bg-gradient-to-b from-black/80 via-black/50 to-black"
                 style={{
-                  WebkitMaskImage: "-webkit-radial-gradient(white, black)",
-                  maskImage: "radial-gradient(white, black)",
                   transform: "translateZ(0)",
                 }}
               >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={current.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative w-full h-full rounded-[1.8rem] overflow-hidden"
-                    style={{
-                      WebkitMaskImage: "-webkit-radial-gradient(white, black)",
-                      maskImage: "radial-gradient(white, black)",
-                      transform: "translateZ(0)",
-                    }}
-                  >
-                    <Image
-                      src={current.image}
-                      alt={`${personalInfo.name} - ${current.role}`}
-                      fill
-                      priority
-                      sizes="(max-width: 768px) 100vw, 420px"
-                      className="object-cover object-top filter contrast-[1.04]"
-                    />
-                    {/* Atmospheric lighting gradient on image bottom */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                  </motion.div>
-                </AnimatePresence>
+                {personas.map((p, idx) => {
+                  const isActive = activePersona === idx;
+                  const isPrev = prevPersona === idx;
+
+                  // Active image is always on top (z-20) fading in
+                  // Previous image stays solid underneath (z-10) during transition to prevent dark flash
+                  // Inactive images are z-0 and opacity 0
+                  const zIndex = isActive ? 20 : isPrev ? 10 : 0;
+                  const targetOpacity = isActive || isPrev ? 1 : 0;
+
+                  return (
+                    <motion.div
+                      key={p.id}
+                      initial={false}
+                      animate={{
+                        opacity: targetOpacity,
+                      }}
+                      transition={{
+                        opacity: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                      }}
+                      className={`absolute inset-0 w-full h-full rounded-[1.5rem] sm:rounded-[1.8rem] overflow-hidden select-none ${
+                        isActive ? "pointer-events-auto" : "pointer-events-none"
+                      }`}
+                      style={{
+                        zIndex,
+                        transform: "translateZ(0)",
+                        willChange: "opacity",
+                      }}
+                    >
+                      <Image
+                        src={p.image}
+                        alt={`${personalInfo.name} - ${p.role}`}
+                        fill
+                        priority
+                        sizes="(max-width: 768px) 100vw, 420px"
+                        className="object-cover object-top filter contrast-[1.04] pointer-events-none select-none"
+                      />
+                      {/* Atmospheric lighting gradient on image bottom */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                    </motion.div>
+                  );
+                })}
 
                 {/* Floating Lens Info Overlay */}
-                <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between p-3 rounded-2xl glass-surface border border-theme shadow-apple-sm">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-theme-pill text-theme-accent flex items-center justify-center">
-                      <Icon size={16} />
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 z-30 flex items-center justify-between p-2.5 sm:p-3 rounded-xl sm:rounded-2xl glass-surface border border-theme shadow-apple-sm">
+                  <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-theme-pill text-theme-accent flex items-center justify-center shrink-0">
+                      <Icon size={15} />
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-theme-primary leading-tight">
-                        {current.role}
-                      </p>
-                      <p className="text-[10px] font-mono text-theme-muted">
-                        {current.tagline}
-                      </p>
+                    <div className="min-w-0">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={current.id}
+                          initial={{ opacity: 0, y: 2 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -2 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <p className="text-[11px] sm:text-xs font-bold text-theme-primary leading-tight truncate">
+                            {current.role}
+                          </p>
+                          <p className="text-[9px] sm:text-[10px] font-mono text-theme-muted truncate">
+                            {current.tagline}
+                          </p>
+                        </motion.div>
+                      </AnimatePresence>
                     </div>
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-theme-accent px-2 py-0.5 rounded-md bg-theme-pill border border-theme">
-                    {current.stat}
-                  </span>
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={current.id}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.2 }}
+                      className="text-[9px] sm:text-[10px] font-mono font-bold text-theme-accent px-1.5 sm:px-2 py-0.5 rounded-md bg-theme-pill border border-theme shrink-0 ml-2"
+                    >
+                      {current.stat}
+                    </motion.span>
+                  </AnimatePresence>
                 </div>
               </div>
 
               {/* Persona Switcher Tabs */}
-              <div className="grid grid-cols-3 gap-1.5 mt-2.5 px-1">
+              <div className="grid grid-cols-3 gap-1.5 mt-2 px-0.5">
                 {personas.map((p, idx) => (
                   <button
                     key={p.id}
-                    onClick={() => setActivePersona(idx)}
-                    className={`py-1.5 px-2 rounded-xl text-[11px] font-mono font-semibold transition-all duration-200 text-center truncate ${
+                    type="button"
+                    onClick={() => handleSelectPersona(idx)}
+                    className={`py-1.5 px-1.5 sm:px-2 rounded-xl text-[10px] sm:text-[11px] font-mono font-semibold transition-all duration-200 text-center truncate border ${
                       activePersona === idx
-                        ? "theme-tab-active border font-bold"
-                        : "bg-theme-pill text-theme-muted hover:text-theme-primary"
+                        ? "theme-tab-active font-bold border-theme-accent/50"
+                        : "bg-theme-pill border-transparent text-theme-muted hover:text-theme-primary"
                     }`}
                   >
                     {p.role.split(" ")[0]}
@@ -334,7 +396,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Subtle Scroll Indicator */}
+      {/* Subtle Scroll Indicator (Desktop only) */}
       <motion.button
         onClick={() => scrollTo("about")}
         initial={{ opacity: 0 }}
