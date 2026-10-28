@@ -27,35 +27,85 @@ export const LOADER_IMAGES: LoaderMediaItem[] = [
     id: "stark-welcome",
     url: "/loaders/pin-1.png",
     alt: "Tony Stark Welcome",
-    caption: "Jarvis, calibrate portfolio systems...",
-    badge: "Genius Mode",
+    caption: "Jarvis, create this portfolio...",
+    badge: "Iron Man Mode",
     fit: "contain",
   },
   {
     id: "stark-eyeroll",
     url: "/loaders/pin-2.png",
     alt: "Tony Stark Eye Roll",
-    caption: "Waiting for npm run build...",
-    badge: "Compiling Shaders",
+    caption: "Waiting for the website to load...",
+    badge: "Irritation Mode",
     fit: "cover",
   },
   {
     id: "rock-dora",
     url: "/loaders/pin-3.jpg",
     alt: "The Rock Dora",
-    caption: "Exploring portfolio dimensions...",
-    badge: "Dora The Swelled",
+    caption: "Exploring the portfolio...",
+    badge: "Explorer Mode",
     fit: "cover",
   },
   {
     id: "physics-wallah",
     url: "/loaders/pin-4.jpg",
     alt: "Alakh Pandey Sir",
-    caption: "Padho chahe kahin se, code seekho yahi se!",
+    caption: "Sir, ap bhi app banao na!",
     badge: "Physics Wallah",
     fit: "cover",
   },
+  {
+    id: "polite-cat",
+    url: "/loaders/pin-5.jpg",
+    alt: "Polite Smiling Cat",
+    caption: "When the code works on the first try and you act normal.",
+    badge: "Polite Mode",
+    fit: "cover",
+  },
+  {
+    id: "warrior-kitten",
+    url: "/loaders/pin-6.jpg",
+    alt: "Knight Armor Warrior Kitten",
+    caption: "Junior dev ready to deploy to production on a Friday.",
+    badge: "Tiny Warrior",
+    fit: "cover",
+  },
 ];
+
+/**
+ * Fair non-repeating sequence generator (shuffled deck):
+ * Ensures all memes are shown across successive refreshes without repeats.
+ */
+function getNextLoaderMedia(items: LoaderMediaItem[]): LoaderMediaItem {
+  if (typeof window === "undefined" || items.length === 0) return items[0];
+  try {
+    const storageKey = "prashant_portfolio_loader_deck";
+    let pool: number[] = [];
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      try {
+        pool = JSON.parse(stored);
+      } catch {}
+    }
+
+    if (!Array.isArray(pool) || pool.length === 0) {
+      // Build a full permutation of indices [0, ..., n-1]
+      pool = Array.from({ length: items.length }, (_, i) => i);
+      // Fisher-Yates shuffle
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+    }
+
+    const nextIdx = pool.shift() ?? 0;
+    localStorage.setItem(storageKey, JSON.stringify(pool));
+    return items[nextIdx] ?? items[0];
+  } catch {
+    return items[Math.floor(Math.random() * items.length)];
+  }
+}
 
 interface LoaderProps {
   onUnlock?: () => void;
@@ -70,11 +120,9 @@ export const CuteRunnerLoader: React.FC<LoaderProps> = ({ onUnlock }) => {
   const [selectedMedia, setSelectedMedia] = useState<LoaderMediaItem>(LOADER_IMAGES[0]);
   const failSafeTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Check visitor status on mount & pick a random image
+  // Check visitor status on mount & pick next non-repeating meme
   useEffect(() => {
-    // Pick a random image on every page refresh / load
-    const randomIdx = Math.floor(Math.random() * LOADER_IMAGES.length);
-    setSelectedMedia(LOADER_IMAGES[randomIdx]);
+    setSelectedMedia(getNextLoaderMedia(LOADER_IMAGES));
 
     // Respect reduced motion
     const prefersReducedMotion =
