@@ -249,6 +249,10 @@ export default function ChatbotWidget() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const widgetRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null);
+  const isScrollingOrDragging = useRef(false);
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -263,6 +267,74 @@ export default function ChatbotWidget() {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, open, isTyping]);
+
+  // Robust mobile outside-click dismissal that doesn't block page scrolling
+  useEffect(() => {
+    if (!open) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        touchStartPos.current = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY,
+        };
+        isScrollingOrDragging.current = false;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (touchStartPos.current && e.touches.length > 0) {
+        const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
+        const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
+        if (dx > 8 || dy > 8) {
+          isScrollingOrDragging.current = true;
+        }
+      }
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") {
+        isScrollingOrDragging.current = false;
+      }
+    };
+
+    const onDocumentClick = (e: MouseEvent) => {
+      // Preserve desktop behavior 100% (only X button or trigger button closes on desktop)
+      if (window.innerWidth >= 1024) return;
+
+      // If the user was scrolling or swiping the page/widget, do not close
+      if (isScrollingOrDragging.current) {
+        isScrollingOrDragging.current = false;
+        return;
+      }
+
+      const target = e.target as Node | null;
+      if (!target) return;
+
+      // If clicked inside chatbot window or trigger button, do not close
+      if (
+        widgetRef.current?.contains(target) ||
+        triggerRef.current?.contains(target)
+      ) {
+        return;
+      }
+
+      // Genuine outside tap on mobile -> dismiss chatbot
+      setOpen(false);
+    };
+
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    window.addEventListener("click", onDocumentClick, true);
+
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("click", onDocumentClick, true);
+    };
+  }, [open]);
 
   const handleSend = (text: string) => {
     const trimmed = text.trim();
@@ -303,48 +375,38 @@ export default function ChatbotWidget() {
 
   return (
     <>
-      {/* Backdrop overlay for mobile */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="fixed inset-0 z-[540] bg-black/25 backdrop-blur-xs lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)}
-          />
-        )}
-      </AnimatePresence>
-
       {/* Floating Widget Trigger Button */}
       <motion.button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="pointer-events-auto fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-[115] inline-flex items-center gap-3.5 rounded-full bg-theme-card/90 backdrop-blur-xl border border-theme text-theme-primary px-6 py-3.5 shadow-apple-lg hover:border-theme-accent transition-all duration-300 group hover:-translate-y-0.5"
+        className="pointer-events-auto fixed bottom-4 right-3 sm:bottom-7 sm:right-7 z-[555] inline-flex items-center gap-2 sm:gap-3.5 rounded-full bg-theme-card/90 backdrop-blur-xl border border-theme text-theme-primary px-3 py-2 sm:px-6 sm:py-3.5 shadow-apple-lg hover:border-theme-accent transition-all duration-300 group hover:-translate-y-0.5"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         aria-label={open ? "Close Chota Jarvis" : "Open Chota Jarvis"}
       >
-        <span className="relative flex h-3 w-3">
+        <span className="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-emerald-500" />
         </span>
         <div className="text-left">
-          <span className="block text-sm sm:text-[15px] font-bold leading-tight tracking-wide font-sans">
-            Chota Jarvis
+          <span className="block text-xs sm:text-[15px] font-bold leading-tight tracking-wide font-sans">
+            <span className="hidden sm:inline">Chota </span>Jarvis
           </span>
-          <span className="block text-[11px] text-theme-muted font-mono leading-tight mt-0.5">
+          <span className="hidden sm:block text-[11px] text-theme-muted font-mono leading-tight mt-0.5">
             AI Assistant
           </span>
         </div>
-        <ChevronDown size={16} className={`transition-transform duration-300 text-theme-muted ${open ? "rotate-180" : ""}`} />
+        <ChevronDown size={14} className={`transition-transform duration-300 text-theme-muted shrink-0 ${open ? "rotate-180" : ""}`} />
       </motion.button>
 
       {/* Modern Conversational Window */}
       <AnimatePresence>
         {open && (
           <motion.div
-            className="pointer-events-auto fixed bottom-20 right-4 sm:bottom-24 sm:right-7 z-[114] w-[calc(100vw-2rem)] max-w-[400px] max-h-[82vh] h-[580px] flex flex-col rounded-3xl border border-theme glass-surface backdrop-blur-2xl shadow-2xl shadow-black/40 overflow-hidden text-theme-primary"
+            ref={widgetRef}
+            onClick={(e) => e.stopPropagation()}
+            className="pointer-events-auto fixed bottom-16 right-2 left-2 sm:left-auto sm:bottom-24 sm:right-7 z-[550] w-auto sm:w-[400px] max-w-[400px] max-h-[75vh] sm:max-h-[82vh] h-[520px] sm:h-[580px] flex flex-col rounded-2xl sm:rounded-3xl border border-theme glass-surface backdrop-blur-2xl shadow-2xl shadow-black/40 overflow-hidden text-theme-primary"
             initial={{ opacity: 0, y: 16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
